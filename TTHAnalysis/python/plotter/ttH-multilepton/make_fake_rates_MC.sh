@@ -104,7 +104,7 @@ for WP in $WPs; do
 	    090*)    ptJI="ptJI90";;
 	    075*)    ptJI="ptJI90";;
 	    #075*)    ptJI="ptJI80";;
-	    RA*)  ptJI="conePt";;
+	    RA*)  ptJI="conept";;
 	    sViX0*)    ptJI="ptJI85";;
 	    sMiX0*)    ptJI="ptJI85";;
 	    sVi*)    ptJI="ptJIMIX3";;
@@ -255,7 +255,7 @@ for WP in $WPs; do
         #echo "( $B0 $ElFakeVsPt -p TT_red,TT_bjets,QCDEl_red,QCDEl_bjets -o $PBASE/$what/el_bnb4_${Me}_eta_15_20.root  -R pt20 eta 'abs(LepGood_eta)>1.479 && abs(LepGood_eta)<2.0' ${BG} )"
         #echo "( $B0 $ElFakeVsPt -p TT_red,TT_bjets,QCDEl_red,QCDEl_bjets -o $PBASE/$what/el_bnb4_${Me}_eta_20_25.root  -R pt20 eta 'abs(LepGood_eta)>2.000' ${BG} )"
         for C in 15_17.5 17.5_22.5 20_30 45_999; do
-            conePtCut="-A pt20 conePt '${C%_*} < LepGood_pt*if3(LepGood_mvaTTH>${WNUM},1,0.90/LepGood_jetPtRatiov2) && LepGood_pt*if3(LepGood_mvaTTH>${WNUM},1,0.90/LepGood_jetPtRatiov2) < ${C#*_}' ";
+            conePtCut="-A pt20 conept '${C%_*} < LepGood_pt*if3(LepGood_mvaTTH>${WNUM},1,0.90/LepGood_jetPtRatiov2) && LepGood_pt*if3(LepGood_mvaTTH>${WNUM},1,0.90/LepGood_jetPtRatiov2) < ${C#*_}' ";
             echo "( $B1 $MuDen ${BDen} ${conePtCut} --ratioDen TT_SS_red --ratioNums ".*" -p TT_SS_red,TT_bjets,QCDMu_red,QCDMu_bjets,QCDMu_ljets --pdir $PBASE/$what/mu_bnb_${Me}_eta_00_12_ptC_${C}/ -R pt20 eta 'abs(LepGood_eta)<1.2'   --sP 'lep_.*' ${BG} )"
             echo "( $B1 $MuDen ${BDen} ${conePtCut} --ratioDen TT_SS_red --ratioNums ".*" -p TT_SS_red,TT_bjets,QCDMu_red,QCDMu_bjets,QCDMu_ljets --pdir $PBASE/$what/mu_bnb_${Me}_eta_12_24_ptC_${C}/ -R pt20 eta 'abs(LepGood_eta)>1.2'   --sP 'lep_.*' ${BG} )"
             echo "( $B1 $ElDen ${BDen} ${conePtCut} --ratioDen TT_SS_red --ratioNums ".*" -p TT_SS_red,TT_bjets,QCDEl_red,QCDEl_bjets,QCDEl_ljets --pdir $PBASE/$what/el_bnb_${Me}_eta_00_15_ptC_${C}/ -R pt20 eta 'abs(LepGood_eta)<1.479' --sP 'lep_.*' ${BG} )"
@@ -328,7 +328,7 @@ for WP in $WPs; do
         echo "( $B0 $ElFakeVsPtH -p QCDEl_redNC_pt8,QCDEl_red_pt8,QCDEl_redNC_El8,QCDEl_red_El8 -o $PBASE/$what/el_hltid8_${Me}_eta_00_15.root -R pt20 eta 'abs(LepGood_eta)<1.479' ${BG} )"
         echo "( $B0 $ElFakeVsPtH -p QCDEl_redNC_pt8,QCDEl_red_pt8,QCDEl_redNC_El8,QCDEl_red_El8 -o $PBASE/$what/el_hltid8_${Me}_eta_15_25.root -R pt20 eta 'abs(LepGood_eta)>1.479' ${BG} )"
         for C in 30_50 45_999; do
-            conePtCut="-A pt20 conePt '${C%_*} < LepGood_pt*if3(LepGood_mvaTTH>${WNUM},1,0.90/LepGood_jetPtRatiov2) && LepGood_pt*if3(LepGood_mvaTTH>${WNUM},1,0.90/LepGood_jetPtRatiov2) < ${C#*_}' ";
+            conePtCut="-A pt20 conept '${C%_*} < LepGood_pt*if3(LepGood_mvaTTH>${WNUM},1,0.90/LepGood_jetPtRatiov2) && LepGood_pt*if3(LepGood_mvaTTH>${WNUM},1,0.90/LepGood_jetPtRatiov2) < ${C#*_}' ";
             echo "( $B1 $ElDen ${BDen} ${conePtCut} --ratioDen QCDEl_red_pt17 --ratioNums '.*' -p QCDEl_red_pt17,QCDEl_red_El17,QCDEl_red_noEl17 --pdir $PBASE/$what/el_hltid_${Me}_eta_00_15_ptC_${C}/ -R pt20 eta 'abs(LepGood_eta)<1.479' --sP 'lep_id.*,idemu_.*' ${BG} )"
             echo "( $B1 $ElDen ${BDen} ${conePtCut} --ratioDen QCDEl_red_pt17 --ratioNums '.*' -p QCDEl_red_pt17,QCDEl_red_El17,QCDEl_red_noEl17 --pdir $PBASE/$what/el_hltid_${Me}_eta_15_25_ptC_${C}/ -R pt20 eta 'abs(LepGood_eta)>1.479' --sP 'lep_id.*,idemu_.*' ${BG} )"
         done

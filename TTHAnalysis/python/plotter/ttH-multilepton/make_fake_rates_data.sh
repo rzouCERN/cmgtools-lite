@@ -13,7 +13,7 @@ case $ANALYSIS in
 ttH) T="${T_TTH}"; CUTFILE="ttH-multilepton/qcd1l.txt"; XVAR="ptJI90_mvaPt090_coarse"; NUM="mvaPt_090i";;
 #susy_wpM) T="${T_SUSY}"; CUTFILE="susy-ewkino/qcd1l_wpM.txt"; XVAR="ptJIMIX4_mvaSusy_sMi_coarselongbin"; NUM="mvaSusy_sMi";;
 #susy_wpV) T="${T_SUSY}"; CUTFILE="susy-ewkino/qcd1l_wpV.txt"; XVAR="ptJIMIX3_mvaSusy_sVi_coarselongbin"; NUM="mvaSusy_sVi";;
-#susy_RA7) T="${T_SUSY}"; CUTFILE="susy-ewkino/qcd1l_RA7.txt"; XVAR="conePt_RA7_coarselongbin"; NUM="ra7_tight";;
+#susy_RA7) T="${T_SUSY}"; CUTFILE="susy-ewkino/qcd1l_RA7.txt"; XVAR="conept_RA7_coarselongbin"; NUM="ra7_tight";;
 susy*) echo "NOT UP TO DATE"; exit 1;;
 *) echo "You did not specify the analysis"; exit 1;;
 esac;
@@ -79,7 +79,7 @@ MuX_Combined)
     PUW=" "
     ;;
 MuX_OR)
-    BCORE="${BCORE} -E ^${CUTPREFIX}trigMu -E ^${CUTPREFIX}conePt10 -E ^${CUTPREFIX}notConePt100 "; 
+    BCORE="${BCORE} -E ^${CUTPREFIX}trigMu -E ^${CUTPREFIX}conept10 -E ^${CUTPREFIX}notConePt100 "; 
     CONEPTVAR="ptJI90_mvaPt0${MVAWP}_coarsecomb"
     PUW="-L ttH-multilepton/frPuReweight.cc -W 'coneptw$trigger($conept,nVert)' "
     ;;
@@ -100,7 +100,7 @@ EleX_Combined)
     PUW=" "
     ;;
 EleX_OR)
-    BCORE="${BCORE} -E ^${CUTPREFIX}trigEl -E ^${CUTPREFIX}conePt15 -E ^${CUTPREFIX}notConePt100 "; 
+    BCORE="${BCORE} -E ^${CUTPREFIX}trigEl -E ^${CUTPREFIX}conept15 -E ^${CUTPREFIX}notConePt100 "; 
     CONEPTVAR="ptJI90_mvaPt0${MVAWP}_coarseelcomb"
     PUW="-L ttH-multilepton/frPuReweight.cc -W 'coneptw$trigger($conept,nVert)' "
     ;;

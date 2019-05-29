@@ -16,13 +16,13 @@ idEmuCut: abs(LepGood_pdgId) == 13 || LepGood_idEmu3
 dcvsvlDen:  LepGood_mvaTTH > 0.90 ||  ( LepGood_jetBTagDeepCSV < 0.07 && (abs(LepGood_pdgId)==13 && LepGood_segmentCompatibility > 0.3 || abs(LepGood_pdgId)==11 && LepGood_mvaIdFall17noIso > +0.5)) 
 num : LepGood_mediumMuonId > 0 && LepGood_mvaTTH > 0.90 ; Disable=True
 pt10 : LepGood_pt > 10; Disable=True
-conePt10 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 10
-conePt15 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 15; Disable=True
-conePt20 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 20; Disable=True
-conePt30 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 30; Disable=True
-conePt45 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 45; Disable=True
-conePt65 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 65; Disable=True
-conePt81 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 81; Disable=True
+conept10 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 10
+conept15 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 15; Disable=True
+conept20 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 20; Disable=True
+conept30 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 30; Disable=True
+conept45 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 45; Disable=True
+conept65 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 65; Disable=True
+conept81 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 81; Disable=True
 notConePt100 : LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) < 100 
 trigMu   : ( HLT_FR_Mu3_PFJet40 && LepGood_awayJet_pt > 45 && LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) < 32  ) || \
              ( HLT_FR_Mu8  && LepGood_pt >  8 && LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 15 && LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2) > 15  ) || \

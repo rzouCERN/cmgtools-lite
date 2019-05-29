@@ -256,7 +256,7 @@ if __name__ == "__main__":
                XVar="mvaSusy_sVi_ptJIMIX3_mvaSusy_sVi"
            if an=='susy_RA7':
                ID="wpRA7E2_rec40";
-               XVar="ra7_tight_conePt_RA7"
+               XVar="ra7_tight_conept_RA7"
            readMany2D(["TT_red"], h2d_el_tt, "/".join([MCPlots, "el_lbin_"+ID+"_bAny_eta_%s.root"]), XVar+"_coarselongbin_%s",   etaslices_el, (10,999) )
            readMany2D(["TT_red"], h2d_mu_tt, "/".join([MCPlots, "mu_lbin_"+ID+"_bAny_eta_%s.root"]), XVar+"_coarselongbin_%s",   etaslices_mu, (10,999) )
        else: 
