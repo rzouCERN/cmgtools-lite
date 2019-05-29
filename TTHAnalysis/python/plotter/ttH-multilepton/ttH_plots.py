@@ -281,14 +281,17 @@ if __name__ == '__main__':
 
 
     if '4l_' in torun:
-        x = base('4l')
+        x = base('4l', year)
         if '_appl' in torun: x = add(x,'-I ^TTTT ')
         if '_relax' in torun: x = add(x,'-X ^TTTT ')
         if '_data' in torun: x = x.replace('mca-4l-mc.txt','mca-4l-mcdata.txt')
         if '_extr' in torun: x = x.replace('mca-4l-mc.txt','mca-4l-mc-sigextr.txt')
         if '_synch' in torun: 
             x = x.replace('ttH-multilepton/2lss_3l_plots.txt','ttH-multilepton/synchTuple.txt')
-            x = add(x, ' --Fs {P}/8_synch')
+            x = x.replace('ttH-multilepton/mca-4l-mc-{year}.txt'.format(year=year),'ttH-multilepton/mca-synch-4l.txt' )
+#        if '_synch' in torun: 
+#            x = x.replace('ttH-multilepton/2lss_3l_plots.txt','ttH-multilepton/synchTuple.txt')
+#            x = add(x, ' --Fs {P}/8_synch')
 
         if '_frdata' in torun:
             x = promptsub(x)
@@ -305,7 +308,8 @@ if __name__ == '__main__':
         if '_flip' in torun: x = add(x,'-I ^same-sign')
         if '_synch' in torun: 
             x = x.replace('ttH-multilepton/2lss_3l_plots.txt','ttH-multilepton/synchTuple.txt')
-            x = add(x, ' --Fs {P}/8_synch')
+            x = x.replace('ttH-multilepton/mca-2lss-mc-sigextr.txt','ttH-multilepton/mca-synch.txt')
+            #x = add(x, ' --Fs {P}/8_synch')
         if '_extr' in torun:
             x = x.replace('mca-2lss-mc.txt','mca-2lss-mc-sigextr.txt').replace('--showRatio --maxRatioRange 0 2','--showRatio --maxRatioRange 0 1 --ratioYLabel "S/B"')
 
@@ -381,7 +385,8 @@ if __name__ == '__main__':
         if '_appl' in torun: x = add(x,'-I ^TTT ')
         if '_synch' in torun:
             x = x.replace('ttH-multilepton/2lss_3l_plots.txt','ttH-multilepton/synchTuple.txt')
-            x = add(x, ' --Fs {P}/8_synch')
+            x = x.replace('ttH-multilepton/mca-3l-mc-{year}.txt'.format(year=year),'ttH-multilepton/mca-synch-3l.txt' )
+            #x = add(x, ' --Fs {P}/8_synch')
         if '_extr' in torun:
             x = x.replace('mca-3l-mc.txt','mca-3l-mc-sigextr.txt').replace('--showRatio --maxRatioRange 0 2','--showRatio --maxRatioRange 0 1 --ratioYLabel "S/B"')
         if '_relax' in torun: x = add(x,'-X ^TTT ')
@@ -412,12 +417,13 @@ if __name__ == '__main__':
         runIt(x,'%s'%torun,plots)
 
     if 'cr_ttz' in torun:
-        x = base('3l')
+        x = base('3l', year)
         if '_appl' in torun: x = add(x,'-I ^TTT ')
 
         if '_synch' in torun:
             x = x.replace('ttH-multilepton/2lss_3l_plots.txt','ttH-multilepton/synchTuple.txt')
-            x = add(x, ' --Fs {P}/8_synch')
+            x = x.replace('ttH-multilepton/mca-3l-mc-{year}.txt'.format(year=year),'ttH-multilepton/mca-synch-3l.txt' )
+            #x = add(x, ' --Fs {P}/8_synch')
         if '_extr' in torun:
             x = x.replace('mca-3l-mc.txt','mca-3l-mc-sigextr.txt').replace('--showRatio --maxRatioRange 0 2','--showRatio --maxRatioRange 0 1 --ratioYLabel "S/B"')
 
@@ -454,13 +460,14 @@ if __name__ == '__main__':
         plots = ['lep4_pt','met','mZ1','4lep_m4l_noRecl','4lep_mZ2_noRecl','minMllAFAS','tot_weight','4lep_nJet25','nBJetCentralMedium25']
         runIt(x,'%s'%torun,plots)
     if 'cr_zz' in torun:
-        x = base('4l')
+        x = base('4l',year)
         x = x.replace('mca-4l-mc.txt','mca-4l-mcdata.txt')
         x = x.replace("--binname 4l","--binname 4l_crzz")
         if '_extr' in torun: x = x.replace('mca-4l-mc.txt','mca-4l-mc-sigextr.txt')
         if '_synch' in torun: 
             x = x.replace('ttH-multilepton/2lss_3l_plots.txt','ttH-multilepton/synchTuple.txt')
-            x = add(x, ' --Fs {P}/8_synch')
+            x = x.replace('ttH-multilepton/mca-4l-mc-{year}.txt'.format(year=year),'ttH-multilepton/mca-synch-4l.txt' )
+            #x = add(x, ' --Fs {P}/8_synch')
 
         x = add(x,"-I ^Zveto -I ^2b1B")
         if '_data' not in torun: x = add(x, "--xp data ")
