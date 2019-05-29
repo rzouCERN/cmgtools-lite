@@ -52,7 +52,7 @@ class OSpair:
         elif abs(self.l1.pdgId) == 15 or abs(self.l2.pdgId) == 15: self.target = 60
         else                                                     : self.target = 50
   
-        self.mll  = (self.l1.p4(self.l1.conePt) + self.l2.p4(self.l2.conePt)).M()
+        self.mll  = (self.l1.p4(self.l1.conept) + self.l2.p4(self.l2.conept)).M()
         self.mllR = (self.l1.p4()               + self.l2.p4()              ).M()
         self.diff = abs(self.target - self.mll)
 
@@ -139,13 +139,13 @@ class LeptonBuilderEWK:
         self.goodtaus   = [t             for t  in Collection(event, "TauGood" , "nTauGood" )]
         self.disctaus   = [t             for t  in Collection(event, "TauOther", "nTauOther")]
         self.taus       = [t             for t  in Collection(event, "TauSel" + self.inputlabel , "nTauSel" + self.inputlabel )]
-        for t in self.taus: t.conePt = t.pt
+        for t in self.taus: t.conept = t.pt
         self.tausFO     = self.taus
 
         ## FO, both flavors
         self.lepSelFO   = self.lepsFO  + self.tausFO
         self.setAttributes(event, self.lepSelFO, event.isData)
-        self.lepSelFO.sort(key = lambda x: x.conePt, reverse=True)
+        self.lepSelFO.sort(key = lambda x: x.conept, reverse=True)
 
         ## tight leptons, both flavors
         self.lepsTT = []
@@ -345,7 +345,7 @@ class LeptonBuilderEWK:
         biglist.append(("mll_i2", "I", 20, "nOS"))
 
         biglist.append(("nLepSel"   , "I"))
-        for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
+        for var in ["pt", "eta", "phi", "mass", "conept", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
             biglist.append(("LepSel_" + var, "F", 4))
         for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx"]:
             biglist.append(("LepSel_" + var, "I", 4))
@@ -431,8 +431,8 @@ class LeptonBuilderEWK:
     def mt2(self, obj1, obj2, var, useGenMet = False):
             
         vector_met     = array.array('d', [0, self.met[var]*cos(self.metphi[var]), self.met[var]*sin(self.metphi[var])])
-        vector_obj1    = array.array('d', [obj1.mass, obj1.p4(obj1.conePt).Px(), obj1.p4(obj1.conePt).Py()])
-        vector_obj2    = array.array('d', [obj2.mass, obj2.p4(obj2.conePt).Px(), obj2.p4(obj2.conePt).Py()])
+        vector_obj1    = array.array('d', [obj1.mass, obj1.p4(obj1.conept).Px(), obj1.p4(obj1.conept).Py()])
+        vector_obj2    = array.array('d', [obj2.mass, obj2.p4(obj2.conept).Px(), obj2.p4(obj2.conept).Py()])
 
         if useGenMet:
             vector_met = array.array('d', [0, self.metgen[var]*cos(self.metgenphi[var]), self.metgen[var]*sin(self.metgenphi[var])])
@@ -446,8 +446,8 @@ class LeptonBuilderEWK:
     ## mtW
     ## _______________________________________________________________
     def mtW(self, lep, var, useGenMet = False):
-        if useGenMet: return self.mt(lep.conePt, self.metgen[var], lep.phi, self.metgenphi[var])
-        return self.mt(lep.conePt, self.met[var], lep.phi, self.metphi[var])
+        if useGenMet: return self.mt(lep.conept, self.metgen[var], lep.phi, self.metgenphi[var])
+        return self.mt(lep.conept, self.met[var], lep.phi, self.metphi[var])
 
 
     ## passCleverPtCut
@@ -474,7 +474,7 @@ class LeptonBuilderEWK:
     
         if (l4 == None                         and (abs(l3.pdgId) == 11 or abs(l3.pdgId) == 13)) or \
             (l4 != None and abs(l3.pdgId) == 11 and (abs(l4.pdgId) == 11 or abs(l4.pdgId) == 15)):
-            if l1.conePt < 25:
+            if l1.conept < 25:
                 self.lepSelFO.pop(0)
 
 
@@ -487,7 +487,7 @@ class LeptonBuilderEWK:
             if not (passTripleMllVeto(l1, l2, l3, 0, 12, True) and passPtCutTriple(l1, l2, l3)): return False
         if len(self.lepSelFO) >= 4:
             l4 = self.lepSelFO[3]
-            if l4.conePt < 10 or not passMllTLVeto(l4, [l1,l2,l3], 0, 12, True): return False
+            if l4.conept < 10 or not passMllTLVeto(l4, [l1,l2,l3], 0, 12, True): return False
         return True
 
 
@@ -527,7 +527,7 @@ class LeptonBuilderEWK:
         self.ret["mll_i2"] = [-1]*20
 
         self.ret["nLepSel"] = 0
-        for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
+        for var in ["pt", "eta", "phi", "mass", "conept", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
             self.ret["LepSel_" + var] = [0.]*20
         for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx"]:
             self.ret["LepSel_" + var] = [0 ]*20
@@ -601,7 +601,7 @@ class LeptonBuilderEWK:
         self.ret["nLepSel"] = len(self.lepSelFO)
         for i, l in enumerate(self.lepSelFO):
             if i == 4: break # only keep the first 4 entries
-            for var in ["pt", "eta", "phi", "mass", "conePt", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
+            for var in ["pt", "eta", "phi", "mass", "conept", "dxy", "dz", "sip3d", "miniRelIso", "relIso", "ptratio", "ptrel", "mva"]:
                 self.ret["LepSel_" + var][i] = getattr(l, var, 0)
             for var in ["pdgId", "isTight", "mcMatchId", "mcMatchAny", "mcPromptGamma", "mcUCSX", "trIdx"]:
                 self.ret["LepSel_" + var][i] = int(getattr(l, var, 0))
@@ -705,16 +705,16 @@ def passPtCutTriple(l1, l2, l3):
     tau   = [l for l in leps if abs(l.pdgId) == 15                      ]
 
     for t in tau:
-        if t.conePt < 20: return False
+        if t.conept < 20: return False
 
     for i,l in enumerate(light):
-        if l.conePt < 10: return False
+        if l.conept < 10: return False
         if i == 0:
-            if abs(l.pdgId) == 11 and l.conePt < 25: return False
-            if abs(l.pdgId) == 13 and l.conePt < 20: return False
+            if abs(l.pdgId) == 11 and l.conept < 25: return False
+            if abs(l.pdgId) == 13 and l.conept < 20: return False
             continue
         if i == 1:
-            if abs(l.pdgId) == 11 and l.conePt < 15: return False
+            if abs(l.pdgId) == 11 and l.conept < 15: return False
             continue
     return True
 
