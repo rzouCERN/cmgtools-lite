@@ -47,7 +47,7 @@ class angular_vars:
 
             l_phi = 0
             for i in range(len(leps)):
-                l_phi += leps[i].conePt * abs(deltaPhi(metphi,leps[i].phi))
+                l_phi += leps[i].conept * abs(deltaPhi(metphi,leps[i].phi))
             ret["L_phi"] = l_phi
 
 
@@ -90,27 +90,27 @@ class angular_vars:
 
             if nlep>=1:
                 if nbloose >= 1:
-                    ret["pTl_DR_l_b_loose1"] = leps[0].conePt * min([deltaR(t,leps[0]) for t in bloose])
+                    ret["pTl_DR_l_b_loose1"] = leps[0].conept * min([deltaR(t,leps[0]) for t in bloose])
                 if nbmedium >= 1:
-                    ret["pTl_DR_l_b_medium1"] = leps[0].conePt * min([deltaR(u,leps[0]) for u in bmedium])
+                    ret["pTl_DR_l_b_medium1"] = leps[0].conept * min([deltaR(u,leps[0]) for u in bmedium])
                 if nbtight >= 1:
-                    ret["pTl_DR_l_b_tight1"] = leps[0].conePt * min([deltaR(v,leps[0]) for v in btight])
+                    ret["pTl_DR_l_b_tight1"] = leps[0].conept * min([deltaR(v,leps[0]) for v in btight])
 
             #pTl_DR_l_b_2:	      
 
             if nlep>=2:
                 if nbloose >= 1:
-                    ret["pTl_DR_l_b_loose2"] = leps[1].conePt * min([deltaR(w,leps[1]) for w in bloose])
+                    ret["pTl_DR_l_b_loose2"] = leps[1].conept * min([deltaR(w,leps[1]) for w in bloose])
                 if nbmedium >= 1:
-                    ret["pTl_DR_l_b_medium2"] = leps[1].conePt * min([deltaR(x,leps[1]) for x in bmedium])
+                    ret["pTl_DR_l_b_medium2"] = leps[1].conept * min([deltaR(x,leps[1]) for x in bmedium])
                 if nbtight >= 1:
-                    ret["pTl_DR_l_b_tight2"] = leps[1].conePt * min([deltaR(y,leps[1]) for y in btight])
+                    ret["pTl_DR_l_b_tight2"] = leps[1].conept * min([deltaR(y,leps[1]) for y in btight])
 
             #L_pt:
 
             l_pt = 0
             for z in range(len(leps)):
-                l_pt += leps[z].conePt
+                l_pt += leps[z].conept
             ret["L_pt"] = l_pt
 
             for br in self.namebranches:

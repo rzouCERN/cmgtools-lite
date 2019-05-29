@@ -227,7 +227,7 @@ MODULES.append( ('oldcode_BDTv8_Hj', lambda : BDTv8_eventReco(os.environ["CMSSW_
                                                       os.environ["CMSSW_BASE"]+'/src/CMGTools/TTHAnalysis/data/kinMVA/tth/Hjj_csv_BDTG.weights.xml',
                                                       selection = [
                 lambda leps,jets,event : len(leps)>=2 and len(jets)>=3,
-                lambda leps,jets,event : leps[0].conePt>20 and leps[1].conePt>10,
+                lambda leps,jets,event : leps[0].conept>20 and leps[1].conept>10,
                 ]
                                                       )) )
 
@@ -244,7 +244,7 @@ MODULES.append( ('BDTv8_Hj', lambda : BDT_eventReco(os.environ["CMSSW_BASE"]+'/s
                                                     csv_mediumWP = 0.8484,
                                                     selection = [
                 lambda leps,jets,event : len(leps)>=2 and len(jets)>=3,
-                lambda leps,jets,event : leps[0].conePt>20 and leps[1].conePt>10,
+                lambda leps,jets,event : leps[0].conept>20 and leps[1].conept>10,
                 ]
                                                             )) )
 MODULES.append( ('BDTrTT_Hj', lambda : BDT_eventReco(os.environ["CMSSW_BASE"]+'/src/CMGTools/TTHAnalysis/data/kinMVA/tth/TMVAClassification_bloose_BDTG.weights.xml',
@@ -259,7 +259,7 @@ MODULES.append( ('BDTrTT_Hj', lambda : BDT_eventReco(os.environ["CMSSW_BASE"]+'/
                                                      csv_mediumWP = 0.8484,
                                                       selection = [
                 lambda leps,jets,event : len(leps)>=2 and len(jets)>=3,
-                lambda leps,jets,event : leps[0].conePt>20 and leps[1].conePt>10,
+                lambda leps,jets,event : leps[0].conept>20 and leps[1].conept>10,
                 ]
                                                      )) )
 MODULES.append( ('BDThttTT_Hj', lambda : BDT_eventReco(os.environ["CMSSW_BASE"]+'/src/CMGTools/TTHAnalysis/data/kinMVA/tth/TMVAClassification_bloose_BDTG.weights.xml',
@@ -274,7 +274,7 @@ MODULES.append( ('BDThttTT_Hj', lambda : BDT_eventReco(os.environ["CMSSW_BASE"]+
                                                      csv_mediumWP = 0.8484,
                                                       selection = [
                 lambda leps,jets,event : len(leps)>=2 and len(jets)>=3,
-                lambda leps,jets,event : leps[0].conePt>20 and leps[1].conePt>10,
+                lambda leps,jets,event : leps[0].conept>20 and leps[1].conept>10,
                 ]
                                                      )) )
 
@@ -387,7 +387,7 @@ MODULES.append( ('LepTightFlag', lambda : ObjTagger("isTight","LepFO",
                                                     )))
 
 MODULES.append( ('LepConePt', lambda : ObjFloatCalc(None,"LepFO",
-                                                    dict(conePt = lambda lep: conept_TTH(lep))
+                                                    dict(conept = lambda lep: conept_TTH(lep))
                                                     )))
 from CMGTools.TTHAnalysis.tools.massCalculator import MassCalculator
 MODULES.append( ('MassCalculator', lambda : MassCalculator("LepFO","LepLoose")))

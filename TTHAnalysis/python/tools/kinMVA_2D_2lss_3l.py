@@ -39,8 +39,8 @@ class KinMVA_2D_2lss_3l:
             MVAVar("mindr_lep1_jet:=mindr_lep1_jet", func = lambda ev: ev.mindr_lep1_jet),
             MVAVar("mindr_lep2_jet:=mindr_lep2_jet", func = lambda ev: ev.mindr_lep2_jet),
             MVAVar("MT_met_lep1:=MT_met_lep1", func = lambda ev : ev.MT_met_lep1),
-            MVAVar("LepGood_conePt[iLepFO_Recl[1]]:=LepGood_conePt[iLepFO_Recl[1]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[1])]),
-            MVAVar("LepGood_conePt[iLepFO_Recl[0]]:=LepGood_conePt[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[0])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[1]]:=LepGood_conept[iLepFO_Recl[1]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[1])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[0]]:=LepGood_conept[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[0])]),
             ]
         self._vars_ttV_2lss_withHj_v8 = self._vars_ttV_2lss + [
             MVAVar("BDTv8_eventReco_Hj_score := max(-1.1,BDTv8_eventReco_Hj_score)", func = lambda ev : max(-1.1,ev.BDTv8_eventReco_Hj_score)),
@@ -70,8 +70,8 @@ class KinMVA_2D_2lss_3l:
             MVAVar("mindr_lep1_jet:=mindr_lep1_jet", func = lambda ev: ev.mindr_lep1_jet),
             MVAVar("mindr_lep2_jet:=mindr_lep2_jet", func = lambda ev: ev.mindr_lep2_jet),
             MVAVar("MT_met_lep1:=MT_met_lep1", func = lambda ev : ev.MT_met_lep1),
-            MVAVar("LepGood_conePt[iLepFO_Recl[2]]:=LepGood_conePt[iLepFO_Recl[2]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[2])]),
-            MVAVar("LepGood_conePt[iLepFO_Recl[0]]:=LepGood_conePt[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[0])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[2]]:=LepGood_conept[iLepFO_Recl[2]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[2])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[0]]:=LepGood_conept[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[0])]),
             ]
 
         self._vars_ttbar_2lss_jecUp = [ 
@@ -98,8 +98,8 @@ class KinMVA_2D_2lss_3l:
             MVAVar("mindr_lep1_jet:=mindr_lep1_jet", func = lambda ev: ev.mindr_lep1_jet_jecUp),
             MVAVar("mindr_lep2_jet:=mindr_lep2_jet", func = lambda ev: ev.mindr_lep2_jet_jecUp),
             MVAVar("MT_met_lep1:=MT_met_lep1", func = lambda ev : ev.MT_met_lep1_jecUp),
-            MVAVar("LepGood_conePt[iLepFO_Recl[1]]:=LepGood_conePt[iLepFO_Recl[1]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[1])]),
-            MVAVar("LepGood_conePt[iLepFO_Recl[0]]:=LepGood_conePt[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[0])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[1]]:=LepGood_conept[iLepFO_Recl[1]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[1])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[0]]:=LepGood_conept[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[0])]),
             ]
         self._vars_ttV_2lss_withHj_v8_jecUp = self._vars_ttV_2lss_jecUp + [
             MVAVar("BDTv8_eventReco_Hj_score := max(-1.1,BDTv8_eventReco_Hj_score)", func = lambda ev : max(-1.1,ev.BDTv8_eventReco_Hj_score_jecUp)),
@@ -128,8 +128,8 @@ class KinMVA_2D_2lss_3l:
             MVAVar("mindr_lep1_jet:=mindr_lep1_jet", func = lambda ev: ev.mindr_lep1_jet_jecUp),
             MVAVar("mindr_lep2_jet:=mindr_lep2_jet", func = lambda ev: ev.mindr_lep2_jet_jecUp),
             MVAVar("MT_met_lep1:=MT_met_lep1", func = lambda ev : ev.MT_met_lep1_jecUp),
-            MVAVar("LepGood_conePt[iLepFO_Recl[2]]:=LepGood_conePt[iLepFO_Recl[2]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[2])]),
-            MVAVar("LepGood_conePt[iLepFO_Recl[0]]:=LepGood_conePt[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[0])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[2]]:=LepGood_conept[iLepFO_Recl[2]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[2])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[0]]:=LepGood_conept[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[0])]),
             ]
 
         self._vars_ttbar_2lss_jecDown = [ 
@@ -156,8 +156,8 @@ class KinMVA_2D_2lss_3l:
             MVAVar("mindr_lep1_jet:=mindr_lep1_jet", func = lambda ev: ev.mindr_lep1_jet_jecDown),
             MVAVar("mindr_lep2_jet:=mindr_lep2_jet", func = lambda ev: ev.mindr_lep2_jet_jecDown),
             MVAVar("MT_met_lep1:=MT_met_lep1", func = lambda ev : ev.MT_met_lep1_jecDown),
-            MVAVar("LepGood_conePt[iLepFO_Recl[1]]:=LepGood_conePt[iLepFO_Recl[1]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[1])]),
-            MVAVar("LepGood_conePt[iLepFO_Recl[0]]:=LepGood_conePt[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[0])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[1]]:=LepGood_conept[iLepFO_Recl[1]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[1])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[0]]:=LepGood_conept[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[0])]),
             ]
         self._vars_ttV_2lss_withHj_v8_jecDown = self._vars_ttV_2lss_jecDown + [
             MVAVar("BDTv8_eventReco_Hj_score := max(-1.1,BDTv8_eventReco_Hj_score)", func = lambda ev : max(-1.1,ev.BDTv8_eventReco_Hj_score_jecDown)),
@@ -186,8 +186,8 @@ class KinMVA_2D_2lss_3l:
             MVAVar("mindr_lep1_jet:=mindr_lep1_jet", func = lambda ev: ev.mindr_lep1_jet_jecDown),
             MVAVar("mindr_lep2_jet:=mindr_lep2_jet", func = lambda ev: ev.mindr_lep2_jet_jecDown),
             MVAVar("MT_met_lep1:=MT_met_lep1", func = lambda ev : ev.MT_met_lep1_jecDown),
-            MVAVar("LepGood_conePt[iLepFO_Recl[2]]:=LepGood_conePt[iLepFO_Recl[2]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[2])]),
-            MVAVar("LepGood_conePt[iLepFO_Recl[0]]:=LepGood_conePt[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conePt[int(ev.iLepFO_Recl[0])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[2]]:=LepGood_conept[iLepFO_Recl[2]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[2])]),
+            MVAVar("LepGood_conept[iLepFO_Recl[0]]:=LepGood_conept[iLepFO_Recl[0]]", func = lambda ev : ev.LepGood_conept[int(ev.iLepFO_Recl[0])]),
             ]
 
         memvars_ttV = [

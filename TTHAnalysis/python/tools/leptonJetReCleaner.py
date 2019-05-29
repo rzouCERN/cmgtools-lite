@@ -46,7 +46,7 @@ class LeptonJetReCleaner:
         label = self.label
 
         biglist = [
-            ("nLepGood","I"), ("LepGood_conePt","F",20,"nLepGood"),
+            ("nLepGood","I"), ("LepGood_conept","F",20,"nLepGood"),
             ("nLepLoose"+label, "I"), ("iL"+label,"I",20), # passing loose
             ("nLepLooseVeto"+label, "I"), ("iLV"+label,"I",20), # passing loose + veto
             ("nLepCleaning"+label, "I"), ("iC"+label,"I",20), # passing cleaning
@@ -280,7 +280,7 @@ class LeptonJetReCleaner:
 
         ### attach labels and return
         fullret["nLepGood"]=len(leps)
-        fullret["LepGood_conePt"] = [lep.conept for lep in leps]
+        fullret["LepGood_conept"] = [lep.conept for lep in leps]
         for k,v in ret.iteritems(): 
             fullret[k+self.label] = v
         fullret.update(retwlabel)

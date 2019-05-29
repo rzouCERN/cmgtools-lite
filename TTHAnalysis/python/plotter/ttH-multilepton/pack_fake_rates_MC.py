@@ -59,7 +59,7 @@ if __name__ == "__main__":
        etaslices_c_mu = [ (0.4,"00_12"), (1.8,"12_24") ]
        torun = []
 #       torun += [("sViX4E2","ptJIMIX_mvaSusy_sVi","mvaSusy_sVi","30"),("sMiX4E2","ptJIMIX2_mvaSusy_sMi","mvaSusy_sMi","30")]
-       torun += [("RA7E2","conePt_RA7","ra7_tight","40")]
+       torun += [("RA7E2","conept_RA7","ra7_tight","40")]
 #       torun += [("sViX4vE2","ptJIMIX_mvaSusy_sVi","mvaSusy_sVi","30"),("sMiX4vE2","ptJIMIX2_mvaSusy_sMi","mvaSusy_sMi","30")]
 #       torun += [("sViX0E2","ptJI85_mvaSusy_sVi","mvaSusy_sVi","30"),("sMiX0E2","ptJI85_mvaSusy_sMi","mvaSusy_sMi","30")]
        torun += [("sViX4mrE2","ptJIMIX3_mvaSusy_sVi","mvaSusy_sVi","30"),("sMiX4mrE2","ptJIMIX4_mvaSusy_sMi","mvaSusy_sMi","30")]

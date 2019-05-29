@@ -6,7 +6,7 @@ nBJetLoose25 : nBJetLoose25 : [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T}
 nBJetCentralMedium25 : nBJetCentralMedium25 : [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25\, CSV Medium)', XNDdiv=505
 
 lep1Pt:  LepGood1_pt       : 20,0,100; XTitle="Leading lepton p_{T} [GeV]"
-lep1ConePt:  LepGood1_conePt       : 20,0,100; XTitle="Leading lepton cone p_{T} [GeV]"
+lep1ConePt:  LepGood1_conept       : 20,0,100; XTitle="Leading lepton cone p_{T} [GeV]"
 lep2Pt:  LepGood2_pt       : 20,0,100; XTitle="Subleading lepton p_{T} [GeV]"
-lep2ConePt:  LepGood2_conePt       : 20,0,100; XTitle="Subleading lepton cone p_{T} [GeV]"
+lep2ConePt:  LepGood2_conept       : 20,0,100; XTitle="Subleading lepton cone p_{T} [GeV]"
 

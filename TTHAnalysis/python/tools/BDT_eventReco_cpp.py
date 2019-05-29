@@ -126,7 +126,7 @@ class BDT_eventReco: # has to run on a recleaner with label _Recl
             if good:
                 self.run.clear()
                 for i,j in enumerate(jets): self.run.addJet(j.pt*jetcorr[i],j.eta,j.phi,j.mass,j.btagCSV,j.btagDeepCSV,j.btagDeepCSVCvsL,j.btagDeepCSVCvsB,j.ptd,j.axis1,j.mult,j.qgl)
-                for l in leps: self.run.addLep(l.conePt,l.eta,l.phi,l.mass)
+                for l in leps: self.run.addLep(l.conept,l.eta,l.phi,l.mass)
                 res = self.run.EvalMVA()
 
             for i,x in enumerate(res): out["BDT%s_eventReco_%s"%(self.prefix,self.branches[i])+self.systsJEC[var]] = res[i]
@@ -155,7 +155,7 @@ if __name__ == '__main__':
                                     csv_looseWP = 0.5426,
                                     csv_mediumWP = 0.8484,
                                     selection = [ lambda leps,jets,event : len(leps)>=2 and len(jets)>=3,
-                                                  lambda leps,jets,event : leps[0].conePt>20 and leps[1].conePt>10,],
+                                                  lambda leps,jets,event : leps[0].conept>20 and leps[1].conept>10,],
                                     )
         def analyze(self,ev):
             print "\nrun %6d lumi %4d event %d: leps %d, jets %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood, getattr(ev,'nJetSel'+self.sf.inputlabel))

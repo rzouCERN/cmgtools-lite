@@ -91,7 +91,7 @@ if __name__ == '__main__':
             Module.__init__(self,name,None)
             self.sf = BDT_resolvedTopTagger('/data/peruzzi/resTop_xgb_csv_order_deepCTag.xml',#'../../data/kinMVA/tth/resTop_xgb_csv_order_deepCTag.xml.gz',
                                             selection = [ lambda leps,jets,event : len(leps)>=2 and len(jets)>=3,
-                                                  lambda leps,jets,event : leps[0].conePt>20 and leps[1].conePt>10,])
+                                                  lambda leps,jets,event : leps[0].conept>20 and leps[1].conept>10,])
         def analyze(self,ev):
             print "\nrun %6d lumi %4d event %d: leps %d, jets %d" % (ev.run, ev.lumi, ev.evt, ev.nLepGood, getattr(ev,'nJetSel'+self.sf.inputlabel))
             print sorted(self.sf(ev).iteritems())

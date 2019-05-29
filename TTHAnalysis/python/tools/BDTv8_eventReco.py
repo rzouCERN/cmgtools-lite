@@ -32,7 +32,7 @@ class BDTv8_eventReco: # has to run on a recleaner with label _Recl
     def getp4lep(self,obj):
         if not obj: return ROOT.TLorentzVector(0,0,0,0)
         p4 = ROOT.TLorentzVector()
-        p4.SetPtEtaPhiM(obj.conePt,obj.eta,obj.phi,obj.mass)
+        p4.SetPtEtaPhiM(obj.conept,obj.eta,obj.phi,obj.mass)
         return p4
     def getbtag(self,obj):
         if not obj: return -0.2

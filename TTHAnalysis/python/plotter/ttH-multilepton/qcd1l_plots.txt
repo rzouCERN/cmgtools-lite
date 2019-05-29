@@ -2,7 +2,7 @@
 * ; LegendCutoff=1e-6
 pt : LepGood_pt : 40,0,100; XTitle="lepton p_{T}  (GeV)", Logy, YMin=0.9, MoreY=100
 eta : LepGood_eta : 20,-2.5,2.5; XTitle="lepton #eta", MoreY=2.8
-conePt:  LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2)  : 20,0,100; XTitle="lepton p_{T}^{cone} [GeV]", Logy, YMin=0.9, MoreY=100
+conept:  LepGood_pt*if3(LepGood_mvaTTH>0.90&&LepGood_mediumMuonId>0, 1.0, 0.90/LepGood_jetPtRatiov2)  : 20,0,100; XTitle="lepton p_{T}^{cone} [GeV]", Logy, YMin=0.9, MoreY=100
 
 sip3d:  LepGood_sip3d       : 20,0,8; XTitle="lepton sip3d"
 miniRelIso:  LepGood_miniRelIso       : 20,0,0.4; XTitle="lepton miniRelIso"

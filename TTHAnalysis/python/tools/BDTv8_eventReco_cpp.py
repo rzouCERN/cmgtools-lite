@@ -79,7 +79,7 @@ class BDTv8_eventReco: # has to run on a recleaner with label _Recl
             if good:
                 self.run.clear()
                 for i,j in enumerate(jets): self.run.addJet(j.pt*jetcorr[i],j.eta,j.phi,j.mass,j.btagCSV,j.qgl)
-                for l in leps: self.run.addLep(l.conePt,l.eta,l.phi,l.mass)
+                for l in leps: self.run.addLep(l.conept,l.eta,l.phi,l.mass)
                 res = self.run.EvalMVA()
 
             for i,x in enumerate(res): out["BDTv8_eventReco_%s"%self.branches[i]+self.systsJEC[var]] = res[i]
