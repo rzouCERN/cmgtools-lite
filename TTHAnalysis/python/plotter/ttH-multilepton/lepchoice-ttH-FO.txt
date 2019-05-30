@@ -33,10 +33,10 @@ triggerUnc_dn\b : triggerSF_ttH(LepFO_pdgId[0],LepFO_pt[0],LepFO_pdgId[1],LepFO_
 nJetForward25\b : nJetForward25_Recl_nom; AlsoData
 nBJetForwardLoose25\b : nJetForwardLoose25_Recl_nom; AlsoData
 nBJetForwardMedium25\b : nJetForwardMedium25_Recl_no; AlsoData
-#nJetCentral25\b : nJetCentral25_Recl_nom; AlsoData
-nJet25\b : nJetCentral25_Recl_nom; AlsoData
-#nBJetCentralLoose25\b : nBJetCentralLoose25_Recl_nom; AlsoData
-nBJetLoose25\b : nBJetCentralLoose25_Recl_nom; AlsoData
+nJetCentral25\b : nJetCentral25_Recl_nom; AlsoData
+#nJet25\b : nJetCentral25_Recl_nom; AlsoData
+nBJetCentralLoose25\b : nBJetCentralLoose25_Recl_nom; AlsoData
+#nBJetLoose25\b : nBJetCentralLoose25_Recl_nom; AlsoData
 nBJetCentralMedium25\b : nBJetCentralMedium25_Recl_nom; AlsoData
 ht25\b : ht25_Recl_nom; AlsoData
 mht25\b : mht25_Recl_nom; AlsoData
