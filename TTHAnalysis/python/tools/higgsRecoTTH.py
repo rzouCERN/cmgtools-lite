@@ -1,8 +1,6 @@
 from CMGTools.TTHAnalysis.treeReAnalyzer import Collection
 import ROOT, itertools
 
-MODULES=[]
-MODULES.append( ('higgsRecoTTH', lambda : HiggsRecoTTH(label="_Recl",cut_BDT_rTT_score = 0.0,cuts_mW_had = (60.,100.),cuts_mH_vis = (80.,140.),btagDeepCSVveto = 0.1522) ))
 class HiggsRecoTTH:
     def __init__(self,label="_Recl",cut_BDT_rTT_score = 0.0, cuts_mW_had = (50.,110.), cuts_mH_vis = (90.,130.), btagDeepCSVveto = 0.4941):
         self.label = label
@@ -32,7 +30,7 @@ class HiggsRecoTTH:
             #j2top = getattr(event,"BDT_resolvedTopTagger_j2")
             #j3top = getattr(event,"BDT_resolvedTopTagger_j3")
             #jetsNoTopNoB = [j for i,j in enumerate(jets) if i not in [j1top,j2top,j3top] and j.btagDeepCSV<self.btagDeepCSVveto]
-            jetsNoTopNoB = [j for i,j in enumerate(jets) if j.btagDeepCSV<self.btagDeepCSVveto]
+            jetsNoTopNoB = [j for i,j in enumerate(jets) if j.btagDeepB<self.btagDeepCSVveto]
 
             for _lep,lep in [(ix,x.p4()) for ix,x in enumerate(lepsFO)]:
                 for _j1,_j2,j1,j2 in [(jets.index(x1),jets.index(x2),x1.p4(),x2.p4()) for x1,x2 in itertools.combinations(jetsNoTopNoB,2)]:
