@@ -13,23 +13,25 @@ class HiggsRecoTTH:
         return self.branches
     def __call__(self,event):
 
-        score = getattr(event,"BDT_resolvedTopTagger_mvaValue")
+        #score = getattr(event,"BDT_resolvedTopTagger_mvaValue")
+        score = 1
 
         candidates=[]
 
         if score>self.cut_BDT_rTT_score:
 
-            nleps = getattr(event,"nLepGood")
+            #nleps = getattr(event,"nLepGood")
             nFO = getattr(event,"nLepFO"+self.label)
-            ileps = getattr(event,"iLepFO"+self.label)
-            leps = Collection(event,"LepGood","nLepGood")
-            lepsFO = [leps[ileps[i]] for i in xrange(nFO)]
-
+            #ileps = getattr(event,"iLepFO"+self.label)
+            #leps = Collection(event,"LepGood","nLepGood")
+            #lepsFO = [leps[ileps[i]] for i in xrange(nFO)]
+            lepsFO = Collection(event,"LepFO", "nLepFO")
             jets = [x for x in Collection(event,"JetSel"+self.label,"nJetSel"+self.label)]
-            j1top = getattr(event,"BDT_resolvedTopTagger_j1")
-            j2top = getattr(event,"BDT_resolvedTopTagger_j2")
-            j3top = getattr(event,"BDT_resolvedTopTagger_j3")
-            jetsNoTopNoB = [j for i,j in enumerate(jets) if i not in [j1top,j2top,j3top] and j.btagDeepCSV<self.btagDeepCSVveto]
+            #j1top = getattr(event,"BDT_resolvedTopTagger_j1")
+            #j2top = getattr(event,"BDT_resolvedTopTagger_j2")
+            #j3top = getattr(event,"BDT_resolvedTopTagger_j3")
+            #jetsNoTopNoB = [j for i,j in enumerate(jets) if i not in [j1top,j2top,j3top] and j.btagDeepCSV<self.btagDeepCSVveto]
+            jetsNoTopNoB = [j for i,j in enumerate(jets) if j.btagDeepCSV<self.btagDeepCSVveto]
 
             for _lep,lep in [(ix,x.p4()) for ix,x in enumerate(lepsFO)]:
                 for _j1,_j2,j1,j2 in [(jets.index(x1),jets.index(x2),x1.p4(),x2.p4()) for x1,x2 in itertools.combinations(jetsNoTopNoB,2)]:
@@ -54,3 +56,10 @@ class HiggsRecoTTH:
         ret["Hreco_j1Idx"] = best[4] if best else -99
         ret["Hreco_j2Idx"] = best[5] if best else -99
         return ret
+
+
+
+MODULES=[]
+
+
+MODULES.append( ('higgsRecoTTH', lambda : HiggsRecoTTH(label="") ) )
