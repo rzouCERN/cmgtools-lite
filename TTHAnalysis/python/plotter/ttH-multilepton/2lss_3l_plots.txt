@@ -38,9 +38,16 @@ nJet40_from0:	    	nJetCentral40					: [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5] ; 
 4lep_nJet25:	    	nJetCentral25					: [1.5,2.5,3.5,4.5,5.5] ; XTitle='N(jet\, p_{T} > 25 GeV)', XNDiv=5, xBinLabels="2\,3\,4\,#geq 5"
 nBJetLoose25:	nBJetCentralLoose25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVL)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
 nBJetCentralMedium25:	nBJetCentralMedium25				: [-0.5,0.5,1.5,2.5,3.5,4.5] ; XTitle='N(jet\, p_{T} > 25 GeV\, CSVM)', XNDiv=5, xBinLabels="0\,1\,2\,3\,#geq 4", MoreY=1.7
-
+#FIXME 
+2lep_pTHvis:  if3(nLepFO>1, Hreco_pTHvis,-99)	                                         : 50,0,350; XTitle="pT of reconstructed Higgs",  Legend='TL', IncludeOverflows=False
+2lep_nHiggs_prompt: if3(nLepFO>1, Hreco_nHiggs_status_prompt, -99)                       : 20,0,20; XTitle="number of prompt Higgs" , Legend= 'TL', IncludeOverflows=False
+2lep_nHiggs_isHP: if3(nLepFO>1, Hreco_nHiggs_status_isHP, -99)                       : 20,0,20; XTitle="number of hard process Higgs" , Legend= 'TL', IncludeOverflows=False
+2lep_nHiggs_fromHP: if3(nLepFO>1, Hreco_nHiggs_status_fromHP, -99)                       : 20,0,20; XTitle="number of Higgs from hard processes" , Legend= 'TL', IncludeOverflows=False
+2lep_pTHgen:  if3(nLepFO>1, Hreco_pTHgen,-99)	                                         : 50,0,350; XTitle="pT of generator Higgs",  Legend='TL', IncludeOverflows=False
+2lep_2DpT: Hreco_pTHvis\:Hreco_pTHgen         : [25,35,50,70,90,110,130,160,200,300]*[25,35,50,70,90,110,130,160,200,300] ; XTitle="pTHvis", YTitle="pTHgen", Legend='TL', LegendCutoff=1e-5, PlotMode='COLZ'
+2lep_2DpT_diffbin: Hreco_pTHvis\:Hreco_pTHgen : [50,150,250,350,500,650,750,850]*[50,150,250,350,500,650,750,850,1000] ; XTitle="pTHvis", YTitle="pTHgen", Legend='TL', LegendCutoff=1e-5, PlotMode='COLZ'
+#FIXME
 nJnB_Central25Medium : nJnB(nJetCentral25,nBJetCentralMedium25) : [-0.5,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5,13.5,14.5] ; XTitle='(Number of jets| number of b-tagged jets)'
-
 2lep_nTight: 	if3(nLepFO>1,LepGood1_isLepTight+LepGood2_isLepTight,-99)                                          : [-0.5,0.5,1.5,2.5]; XTitle="Tight leptons among the first two", XNDdiv=505, Legend='TL', IncludeOverflows=False
 2lep_charge:  	if3(nLepFO>1,LepGood1_charge,-99) 	     	     	      		     : [-2,0,2]; XTitle='lepton charge', XNDiv=205, Legend='TR', IncludeOverflows=False, MoreY=2.0, xBinLabels="#minus #minus\,+ +"
 2lep_flav:    	if3(nLepFO>1,if3(abs(LepGood1_pdgId)!=abs(LepGood2_pdgId),1,abs(LepGood1_pdgId)-11),-99)     : [-0.5,0.5,1.5,2.5]; XTitle="lepton flavour", XNDiv=505, MoreY=2.0, xBinLabels="ee\,e#mu\,#mu#mu"

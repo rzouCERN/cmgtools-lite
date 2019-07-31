@@ -10,7 +10,6 @@ Convs : W4JetsToLNu_2017 : xsec : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGa
 Convs : DYJetsToLL_M50_1J_2017_part1+DYJetsToLL_M50_1J_2017_part2+DYJetsToLL_M50_1J_2017_part3 : xsec : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) ) ; FillColor=ROOT.kOrange
 Convs : DYJetsToLL_M50_2J_2017_part1+DYJetsToLL_M50_2J_2017_part2+DYJetsToLL_M50_2J_2017_part3 : 112 : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) ) ; FillColor=ROOT.kOrange
 
-
 Convs : DYJetsToLL_M4to50_HT100to200_2017+DYJetsToLL_M4to50_HT100to200_ext1_2017: xsec : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) ) ; FillColor=ROOT.kOrange
 Convs : DYJetsToLL_M4to50_HT200to400_2017+DYJetsToLL_M4to50_HT200to400_ext1_2017 : xsec : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) ) ; FillColor=ROOT.kOrange
 Convs : DYJetsToLL_M4to50_HT400to600_2017+DYJetsToLL_M4to50_HT400to600_ext1_2017 : xsec : ((LepGood1_mcMatchId==0 && LepGood1_mcPromptGamma==1) || (LepGood2_mcMatchId==0 && LepGood2_mcPromptGamma==1) ) ; FillColor=ROOT.kOrange

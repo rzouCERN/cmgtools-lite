@@ -1,0 +1,3 @@
+ttH    : TTH : 0.5071*0.418 : LepGood1_isMatchRightCharge && LepGood2_isMatchRightCharge && LepGood3_isMatchRightCharge
+
+#for inclusive, you require no matching and thus change the above cut to "1" 

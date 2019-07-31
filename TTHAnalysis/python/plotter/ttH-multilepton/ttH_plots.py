@@ -5,21 +5,21 @@ import os
 
 ODIR=sys.argv[1]
 
-#dowhat = "plots" 
+dowhat = "plots" # see plotter/diff_plots for command line
 #dowhat = "dumps" 
 #dowhat = "yields" 
-dowhat = "ntuple" # syntax: python ttH-multilepton/ttH_plots.py no 2lss_SR_extr outfile_{cname}.root --sP var1,var2,...
+#dowhat = "ntuple" # syntax: python ttH-multilepton/ttH_plots.py no 2lss_SR_extr outfile_{cname}.root --sP var1,var2,...
 
 P0="/pool/cienciasrw/userstorage/sscruz/NanoAOD/"
 if 'cmsco01'   in os.environ['HOSTNAME']: P0="/data/peruzzi"
 if 'cmsphys10' in os.environ['HOSTNAME']: P0="/data1/g/gpetrucc"
-if 'ucl.ac.be' in os.environ['HOSTNAME']: P0="/nfs/user/pvischia/tth/"
+if 'ucl.ac.be' in os.environ['HOSTNAME']: P0="/nfs/user/pvischia/tth"
 TREES = ""
 
 #TREESONLYSKIM = "-P "+P0+"/NanoAODtest_v2 --Fs {P}/1_recleaner --Fs {P}/2_TauTightFlag --Fs {P}/3_triggerResult  --Fs {P}/4_eventVars "
 #TREESONLYSKIM = "-P "+P0+"/ttH_EasterProduction/ --Fs {P}/1_triggerDecision --Fs {P}/2_countJets --Fs {P}/3_lepVars --FMCs {P}/4_bweight_new --Fs {P}/5_MET --Fs {P}/5_taus " 
-#TREESONLYSKIM = "-P "+P0+"/ttH_EasterProduction_2lss_3l/ --Fs {P}/1_triggerDecision --Fs {P}/2_countJets --Fs {P}/3_lepVars --FMCs {P}/4_bweight_new --Fs {P}/5_MET --Fs {P}/5_taus --Fs {P}/6_eventVars " 
-TREESONLYSKIM  = "-P " +P0+"/synch_2016/ --Fs {P}/1_tight --Fs {P}/2_synch --Fs {P}/3_trigger --Fs {P}/4_mass "
+TREESONLYSKIM = "-P "+P0+"/ttH_EasterProduction_2lss_3l/ --Fs {P}/1_triggerDecision --Fs {P}/2_countJets_fix --Fs {P}/3_lepVars --FMCs {P}/4_bweight_new --Fs {P}/5_MET --Fs {P}/5_taus --Fs {P}/6_eventVars --Fs /home/ucl/cp3/elfaham/CMSSW_9_4_4/src/CMGTools/TTHAnalysis/macros " 
+#TREESONLYSKIM  = "-P " +P0+"/synch_2016/ --Fs {P}/1_tight --Fs {P}/2_synch --Fs {P}/3_trigger --Fs {P}/4_mass "
 #TREESONLYSKIM  = "-P "+P0+"/synch_2016/ --Fs {P}/1_tight --Fs {P}/2_synch --Fs {P}/3_trigger --Fs {P}/4_mass "
 TREESONLYFULL = TREESONLYSKIM
 
@@ -31,11 +31,13 @@ def base(selection, year):
     elif year == '2018': lumi = 59.7
     CORE+=" -f -j 88 -l {lumi} --s2v -L ttH-multilepton/functionsTTH.cc --tree nanoAODskim --mcc ttH-multilepton/lepchoice-ttH-FO.txt --split-factor=-1  ".format(lumi=lumi)# --neg"
     RATIO= " --maxRatioRange 0.0  1.99 --ratioYNDiv 505 "
-    RATIO2=" --showRatio --attachRatioPanel --fixRatioRange "
+    #RATIO2=" --showRatio --attachRatioPanel --fixRatioRange "
+    RATIO2=" --attachRatioPanel --fixRatioRange " #TODO here you are removing the ratio plot, it needs to be added back
     LEGEND=" --legendColumns 2 --legendWidth 0.25 "
     LEGEND2=" --legendFontSize 0.042 "
     SPAM=" --noCms --topSpamSize 1.1 --lspam '#scale[1.1]{#bf{CMS}} #scale[0.9]{#it{Preliminary}}' "
     if dowhat == "plots": CORE+=RATIO+RATIO2+LEGEND+LEGEND2+SPAM+"  --showMCError --rebin 4 --xP 'nT_.*' --xP 'debug_.*'"
+    #if dowhat == "plots": CORE+=RATIO+RATIO2+LEGEND+LEGEND2+SPAM+"  --rebin 4 --xP 'nT_.*' --xP 'debug_.*'" # TODO here you are reomving the MC error, it needs to be added back
 
     if selection=='2lss':
         GO="{CORE} ttH-multilepton/mca-2lss-mc-{year}.txt ttH-multilepton/2lss_tight.txt ".format(year=year,CORE=CORE)
@@ -106,6 +108,10 @@ if __name__ == '__main__':
 
     if '2lss_' in torun:
         x = base('2lss',year)
+        if '_diff' in torun:  
+            #x = x.replace('mca-2lss-mc-{year}.txt'.format(year=year),'mca-2lss-mc-diff-{year}.txt'.format(year=year)) 
+            x = x.replace('mca-2lss-mc-{year}.txt'.format(year=year),'mca-2lss-mc-{year}.txt'.format(year=year)) #all mca files
+            x = x.replace('ttH-multilepton/2lss_3l_plots.txt','ttH-multilepton/2lss_3l_plots_diff.txt')
         if '_appl' in torun: x = add(x,'-I ^TT ')
         if '_flip' in torun: x = add(x,'-I ^same-sign')
         if '_1fo' in torun:
