@@ -43,8 +43,10 @@ class HiggsRecoTTH:
 						     # only really makes sense for outgoing particles
 	}
  
+        genjet = Collection(event, "GenJet", "nGenJet" )  
         genpar = Collection(event, "GenPart", "nGenPart")
         nHiggs = 0
+        ngenjets = 0
         nHiggs_status = [0]*257
         pTHgen = 0
         for part in genpar:
@@ -57,8 +59,14 @@ class HiggsRecoTTH:
             #nHiggs_status[part.statusFlags &(1 << statusFlagsMap['isPrompt'])] +=1
             #nHiggs_status[part.statusFlags &(1 << statusFlagsMap['fromHardProcess'])] +=1
                pTHgen=part.p4().Pt()
-               #print (part.pdgId) 
-            
+               for jet in genjet:
+                   if jet.p4().Pt() < 25: continue
+                   ngenjets +=1
+                   if not ngenjets == 2: continue
+                   print ngenjets
+                #print (part.pdgId)
+                #etajetgen = jet.p4().Eta()
+                #phijetgen = jet.p4().Phi()
 
         if score>self.cut_BDT_rTT_score:
 

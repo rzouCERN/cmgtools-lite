@@ -6,8 +6,8 @@ from root_numpy import root2array, tree2array
 ## open the files and get the tree
 ## -------------------------------
 #f = ROOT.TFile.Open("./2016/evVarFriend_TTHnobb_2016.root")
-f = ROOT.TFile.Open("./2017/evVarFriend_TTH_amc_2017.root")
-#f = ROOT.TFile.Open("./2018/evVarFriend_TTH_amc_2018.root")
+#f = ROOT.TFile.Open("./2017/evVarFriend_TTH_amc_2017.root")
+f = ROOT.TFile.Open("./2018/evVarFriend_TTH_amc_2018.root")
 t = f.Get("sf/t")
 
 ## select branches and apply selection: only events of which visible pT is constructed
