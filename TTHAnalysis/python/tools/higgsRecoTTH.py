@@ -4,7 +4,7 @@ import ROOT, itertools
 class HiggsRecoTTH:
     def __init__(self,label="_Recl",cut_BDT_rTT_score = 0.0, cuts_mW_had = (50.,110.), cuts_mH_vis = (90.,130.), btagDeepCSVveto = 0.4941):
         self.label = label
-        self.branches = ["Hreco_%s"%x for x in ["minDRlj","visHmass","Wmass","lepIdx","j1Idx","j2Idx","dilepinvmass","pTHvis","nHiggs","nHiggs_status_prompt","nHiggs_status_isHP","nHiggs_status_fromHP","pTHgen"]]
+        self.branches = ["Hreco_%s"%x for x in ["minDRlj","visHmass","Wmass","lepIdx","j1Idx","j2Idx","dilepinvmass","pTHvis","nHiggs","nHiggs_status_prompt","nHiggs_status_isHP","nHiggs_status_fromHP","pTHgen","etaHvis","pTtgen"]]
         self.cut_BDT_rTT_score = cut_BDT_rTT_score
         self.cuts_mW_had = cuts_mW_had
         self.cuts_mH_vis = cuts_mH_vis
@@ -46,9 +46,11 @@ class HiggsRecoTTH:
         genjet = Collection(event, "GenJet", "nGenJet" )  
         genpar = Collection(event, "GenPart", "nGenPart")
         nHiggs = 0
+        nTops  = 0
         ngenjets = 0
         nHiggs_status = [0]*257
         pTHgen = 0
+        pTtgen = 0
         for part in genpar:
             #if not part.pdgId==25 : continue
             if part.pdgId == 25:
@@ -67,6 +69,12 @@ class HiggsRecoTTH:
                 #print (part.pdgId)
                 #etajetgen = jet.p4().Eta()
                 #phijetgen = jet.p4().Phi()
+            elif part.pdgId == abs(6):
+                 nTops +=1
+                 #print nTops
+                 if not part.statusFlags &(1 << statusFlagsMap['isHardProcess']): continue  
+                 pTtgen=part.p4().Pt()
+                  
 
         if score>self.cut_BDT_rTT_score:
 
@@ -92,10 +100,11 @@ class HiggsRecoTTH:
 	   	   Wconstr.SetPtEtaPhiM(W.Pt(),W.Eta(),W.Phi(),80.4)
 	 	   Hvisconstr = lep+Wconstr
 	  	   mHvisconstr = Hvisconstr.M()
-	      	   pTHvisconstr= Hvisconstr.Pt()
+	      	   pTHvisconstr = Hvisconstr.Pt()
+                   etaHvisconstr = Hvisconstr.Eta() #new
 	  	   if mHvisconstr<self.cuts_mH_vis[0] or mHvisconstr>self.cuts_mH_vis[1]: continue
 	     	   mindR = min(lep.DeltaR(j1),lep.DeltaR(j2))
-		   candidates.append((mindR,mHvisconstr,mW,_lep,_j1,_j2,pTHvisconstr))
+		   candidates.append((mindR,mHvisconstr,mW,_lep,_j1,_j2,pTHvisconstr, etaHvisconstr))
                                                              
 
         best = min(candidates) if len(candidates) else None
@@ -108,12 +117,14 @@ class HiggsRecoTTH:
         ret["Hreco_j1Idx"] = best[4] if best else -99
         ret["Hreco_j2Idx"] = best[5] if best else -99
         ret["Hreco_dilepinvmass"]= (lepsFO[0].p4()+lepsFO[best[3]].p4()).M() if best else -99 
-        ret["Hreco_pTHvis"]=best[6] if best else -99
-        ret["Hreco_nHiggs"]= nHiggs
-        ret["Hreco_nHiggs_status_prompt"]= nHiggs_status[1]
-        ret["Hreco_nHiggs_status_isHP"]= nHiggs_status[128]
-        ret["Hreco_nHiggs_status_fromHP"]= nHiggs_status[256]
-        ret["Hreco_pTHgen"]= pTHgen 
+        ret["Hreco_pTHvis"] = best[6] if best else -99
+        ret["Hreco_nHiggs"] =  nHiggs
+        ret["Hreco_nHiggs_status_prompt"] = nHiggs_status[1]
+        ret["Hreco_nHiggs_status_isHP"] = nHiggs_status[128]
+        ret["Hreco_nHiggs_status_fromHP"] = nHiggs_status[256]
+        ret["Hreco_pTHgen"] = pTHgen
+        ret["Hreco_pTtgen"] = pTtgen
+        ret["Hreco_etaHvis"] = best[7] if best else -99  
         return ret
 
             
