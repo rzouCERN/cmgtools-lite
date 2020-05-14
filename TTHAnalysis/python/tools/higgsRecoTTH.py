@@ -88,7 +88,11 @@ class HiggsRecoTTH(Module):
     def run(self,event,Collection):
 
         year=getattr(event,"year")
-        btagvetoval= HiggsRecoTTHbtagwps["DeepFlav_%d_%s"%(year,self.btagDeepCSVveto)][1]
+        if (self.btagDeepCSVveto != 99) : 
+            btagvetoval = HiggsRecoTTHbtagwps["DeepFlav_%d_%s"%(year,self.btagDeepCSVveto)][1]
+        else :
+            btagvetoval = self.btagDeepCSVveto
+#        btagvetoval= HiggsRecoTTHbtagwps["DeepFlav_%d_%s"%(year,self.btagDeepCSVveto)][1]
         statusFlagsMap = {
           # Comments taken from:
           # DataFormats/HepMCCandidate/interface/GenParticle.h

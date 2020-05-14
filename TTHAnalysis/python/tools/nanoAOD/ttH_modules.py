@@ -431,18 +431,42 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.ttH_gen_reco import ttH_gen_reco
 #topRecoModule = lambda : TopRecoSemiLept(constraints=['kWHadMass','kWLepMass','kTopLepMass','kTopHadMass'])
 
 from CMGTools.TTHAnalysis.tools.higgsRecoTTH import HiggsRecoTTH
-higgsRecoTTH = lambda : HiggsRecoTTH(label="_Recl",
+higgsRecoTTH_TopLooseBottom = lambda : HiggsRecoTTH(label="_Recl",
                                      cut_BDT_rTT_score = 0.0,
                                      cuts_mW_had = (60.,100.),
                                      cuts_mH_vis = (80.,140.),
                                      btagDeepCSVveto = 'L', # or 'M'
                                      useTopTagger=True)
-higgsRecoTTHNoTopTagger = lambda : HiggsRecoTTH(label="_Recl",
-                                                cut_BDT_rTT_score = 0.0,
-                                                cuts_mW_had = (60.,100.),
-                                                cuts_mH_vis = (80.,140.),
-                                                btagDeepCSVveto = 'M', # or 'M'
-                                                useTopTagger=False)
+higgsRecoTTH_TopMediumBottom = lambda : HiggsRecoTTH(label="_Recl",
+                                     cut_BDT_rTT_score = 0.0,
+                                     cuts_mW_had = (60.,100.),
+                                     cuts_mH_vis = (80.,140.),
+                                     btagDeepCSVveto = 'M', # or 'M'
+                                     useTopTagger=True)
+higgsRecoTTH_TopNoBottom = lambda : HiggsRecoTTH(label="_Recl",
+                                     cut_BDT_rTT_score = 0.0,
+                                     cuts_mW_had = (60.,100.),
+                                     cuts_mH_vis = (80.,140.),
+                                     btagDeepCSVveto = 99, # or 'M'
+                                     useTopTagger=True)
+higgsRecoTTH_NoTopLooseBottom = lambda : HiggsRecoTTH(label="_Recl",
+                                     cut_BDT_rTT_score = 0.0,
+                                     cuts_mW_had = (60.,100.),
+                                     cuts_mH_vis = (80.,140.),
+                                     btagDeepCSVveto = 'L', # or 'M'
+                                     useTopTagger=False)
+higgsRecoTTH_NoTopMediumBottom = lambda : HiggsRecoTTH(label="_Recl",
+                                     cut_BDT_rTT_score = 0.0,
+                                     cuts_mW_had = (60.,100.),
+                                     cuts_mH_vis = (80.,140.),
+                                     btagDeepCSVveto = 'M', # or 'M'
+                                     useTopTagger=False)
+higgsRecoTTH_NoTopNoBottom = lambda : HiggsRecoTTH(label="_Recl",
+                                     cut_BDT_rTT_score = 0.0,
+                                     cuts_mW_had = (60.,100.),
+                                     cuts_mH_vis = (80.,140.),
+                                     btagDeepCSVveto = 99, # or 'M'
+                                     useTopTagger=False)
 
 from CMGTools.TTHAnalysis.tools.higgsRegressionTTH import HiggsRegressionTTH
 higgsRegressionTTH = lambda : HiggsRegressionTTH(label='_Recl' )
