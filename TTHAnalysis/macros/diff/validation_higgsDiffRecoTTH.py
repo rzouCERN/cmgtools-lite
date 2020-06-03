@@ -142,26 +142,29 @@ class Validation_HiggsDiffRecoTTH():
             
             self.p.append(['%sBDThttTT_eventReco_mvaValue%s'%(self.label,jesLabel), 20, -1., 1.])
 
-
-
-
             # Useful quadrimomenta
-            for suffix in ["_Pt", "_Eta", "_Phi", "_M"]:
+            for suffix in ["_pt", "_eta", "_phi", "_mass"]:
 
-                if ('Pt' in suffix) or ('M' in suffix):
-                    self.p.append(['%sleptonFromHiggs%s%s'%(self.label,suffix,jesLabel), 400, -100, 300])
+                if ('pt' in suffix) or ('mass' in suffix):
                     for obj in [0, 1]:
-                        self.p.append(['%sjetFromHiggs%s%s'%(self.label,suffix,jesLabel), '%sjetFromHiggs%s%s%s'%(self.label,obj,suffix,jesLabel) , 400, -100., 300.])
+                        self.p.append(['%sjetFromHiggs%s%s'%(self.label,jesLabel,suffix), '%sjetFromHiggs%s%s%s'%(self.label,obj,jesLabel,suffix) , 400, -100., 300.])
+                        if obj==0:
+                            self.p.append(['%sleptonFromHiggs%s%s'%(self.label,jesLabel,suffix), '%sleptonFromHiggs%s%s'%(self.label,obj,jesLabel,suffix), 400, -100., 300.])
+
+                        # not needed now, will add later self.out.branch('%sfatJetsNearLeptonFromHiggs%s%s'%(self.label,suffix,jesLabel)        , 'F', 2, '%snFatJetsNearLeptonFromHiggs%s'%(self.label,jesLabel))
+                if 'eta' in suffix:
+                    for obj in [0, 1]:
+                        self.p.append(['%sjetFromHiggs%s%s'%(self.label,suffix,jesLabel), '%sjetFromHiggs%s%s%s'%(self.label,obj,jesLabel,suffix) , 200, -6., 6.])
+                        if obj==0:
+                            self.p.append(['%sleptonFromHiggs%s%s'%(self.label,suffix,jesLabel), '%sleptonFromHiggs%s%s'%(self.label,obj,jesLabel,suffix), 200, -6., 6.])
+
                     # not needed now, will add later self.out.branch('%sfatJetsNearLeptonFromHiggs%s%s'%(self.label,suffix,jesLabel)        , 'F', 2, '%snFatJetsNearLeptonFromHiggs%s'%(self.label,jesLabel))
-                if 'Eta' in suffix:
-                    self.p.append(['%sleptonFromHiggs%s%s'%(self.label,suffix,jesLabel), 200, -6, 6])
+                if 'phi' in suffix:
                     for obj in [0, 1]:
-                        self.p.append(['%sjetFromHiggs%s%s'%(self.label,suffix,jesLabel), '%sjetFromHiggs%s%s%s'%(self.label,obj,suffix,jesLabel) , 200, -6., 6.])
-                    # not needed now, will add later self.out.branch('%sfatJetsNearLeptonFromHiggs%s%s'%(self.label,suffix,jesLabel)        , 'F', 2, '%snFatJetsNearLeptonFromHiggs%s'%(self.label,jesLabel))
-                if 'Phi' in suffix:
-                    self.p.append(['%sleptonFromHiggs%s%s'%(self.label,suffix,jesLabel), 200, -6.28, 6.28])
-                    for obj in [0, 1]:
-                        self.p.append(['%sjetFromHiggs%s%s'%(self.label,suffix,jesLabel), '%sjetFromHiggs%s%s%s'%(self.label,obj,suffix,jesLabel) , 200, -6.28, 6.28])
+                        self.p.append(['%sjetFromHiggs%s%s'%(self.label,suffix,jesLabel), '%sjetFromHiggs%s%s%s'%(self.label,obj,jesLabel,suffix) , 200, -6.28, 6.28])
+                        if obj==0:
+                            self.p.append(['%sleptonFromHiggs%s%s'%(self.label,suffix,jesLabel), '%sleptonFromHiggs%s%s'%(self.label,obj,jesLabel,suffix), 200, -6.28, 6.28])
+
                     # not needed now, will add later self.out.branch('%sfatJetsNearLeptonFromHiggs%s%s'%(self.label,suffix,jesLabel)        , 'F', 2, '%snFatJetsNearLeptonFromHiggs%s'%(self.label,jesLabel))
                 
             # not needed now, will add later self.out.branch('%sfatJetsNearLeptonFromHiggs_deltaR%s'%(self.label,jesLabel)    , 'F', 2, '%snFatJetsNearLeptonFromHiggs%s'%(self.label,jesLabel))
@@ -176,11 +179,18 @@ class Validation_HiggsDiffRecoTTH():
         
 
 for year in [2016, 2017, 2018]:
+    print('With windows, year %s'%year)
     validator = None
-    if year == 2016:
-        validator = Validation_HiggsDiffRecoTTH('/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH/TTHnobb_fxfx_Friend.root'%year, outdir='validationPlots_higgsDiffRecoTTH/%s'%year, altfname='/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss/%s/6_higgsDiffRecoTTH_noWmassConstraint/TTHnobb_fxfx_Friend.root'%year)
-    else:
-        validator = Validation_HiggsDiffRecoTTH('/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH/TTHnobb_fxfx_Friend.root'%year, outdir='validationPlots_higgsDiffRecoTTH/%s'%year)
+    #if year == 2016:
+    validator = Validation_HiggsDiffRecoTTH('/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH/TTHnobb_fxfx_Friend.root'%year, outdir='validationPlots_higgsDiffRecoTTH_windows/%s'%year, altfname='/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH_noWmassConstraint/TTHnobb_fxfx_Friend.root'%year)
+    #else:
+    #    validator = Validation_HiggsDiffRecoTTH('/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH_nowindows/TTHnobb_fxfx_Friend.root'%year, outdir='validationPlots_higgsDiffRecoTTH/%s'%year)
     validator.buildPlotListFromBranches()
     validator.printPlotList()
     validator.plotList()
+    
+    print('Without windows, year %s'%year)
+    validator2 = Validation_HiggsDiffRecoTTH('/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH_nowindows/TTHnobb_fxfx_Friend.root'%year, outdir='validationPlots_higgsDiffRecoTTH_nowindows/%s'%year, altfname='/nfs/user/pvischia/tth/v6/NanoTrees_TTH_091019_v6pre_skim2lss_tight/%s/6_higgsDiffRecoTTH_noWmassConstraint_nowindows/TTHnobb_fxfx_Friend.root'%year)
+    validator2.buildPlotListFromBranches()
+    validator2.printPlotList()
+    validator2.plotList()
