@@ -30,6 +30,20 @@ class HiggsDiffGenTTH(Module):
         self.out.branch('%snQFromWFromT'%self.label     , 'I')
         self.out.branch('%snLFromWFromH'%self.label     , 'I')
         self.out.branch('%snLFromWFromT'%self.label     , 'I')
+        self.out.branch('%snTauFromH'%self.label        , 'I')
+        self.out.branch('%snPiFromTauFromH'%self.label  , 'I')
+        self.out.branch('%snKaFromTauFromH'%self.label  , 'I')
+        self.out.branch('%snLFromTauFromH'%self.label   , 'I')
+        self.out.branch('%snNuFromTauFromH'%self.label  , 'I')
+        self.out.branch('%snTNuFromTauFromH'%self.label , 'I')
+        self.out.branch('%snZFromH'%self.label          , 'I')
+        self.out.branch('%snQFromZFromH'%self.label     , 'I')
+        self.out.branch('%snLFromZFromH'%self.label     , 'I')
+        self.out.branch('%snNuFromZFromH'%self.label    , 'I')
+        self.out.branch('%snTauFromWFromH'%self.label   , 'I')
+        self.out.branch('%snLFromTauFromWFromH'%self.label  , 'I')
+        self.out.branch('%snNuFromTauFromWFromH'%self.label , 'I')
+        self.out.branch('%snhFromTauFromWFromH'%self.label  , 'I')
 
         # Although we expect a maximum of 2 objects per array, we allow for 4 of them to be stored, for safety and later checks
         for suffix in ["_pt", "_eta", "_phi", "_mass"]:
@@ -47,6 +61,20 @@ class HiggsDiffGenTTH(Module):
             self.out.branch('%sQFromWFromT%s'%(self.label,suffix)      , 'F', 4, '%snQFromWFromT'%self.label     ) 
             self.out.branch('%sLFromWFromH%s'%(self.label,suffix)      , 'F', 4, '%snLFromWFromH'%self.label     ) 
             self.out.branch('%sLFromWFromT%s'%(self.label,suffix)      , 'F', 4, '%snLFromWFromT'%self.label     ) 
+            self.out.branch('%sTauFromH%s'%(self.label,suffix)          , 'F', 4, '%snTauFromH'%self.label        )
+            self.out.branch('%sPiFromTauFromH%s'%(self.label,suffix)    , 'F', 4, '%snPiFromTauFromH'%self.label  )
+            self.out.branch('%sKaFromTauFromH%s'%(self.label,suffix)    , 'F', 4, '%snKaFromTauFromH'%self.label  )
+            self.out.branch('%sLFromTauFromH%s'%(self.label,suffix)     , 'F', 4, '%snLFromTauFromH'%self.label   )
+            self.out.branch('%sNuFromTauFromH%s'%(self.label,suffix)    , 'F', 4, '%snNuFromTauFromH'%self.label  )
+            self.out.branch('%sTNuFromTauFromH%s'%(self.label,suffix)   , 'F', 4, '%snTNuFromTauFromH'%self.label )
+            self.out.branch('%sZFromH%s'%(self.label,suffix)            , 'F', 4, '%snZFromH'%self.label          )
+            self.out.branch('%sQFromZFromH%s'%(self.label,suffix)       , 'F', 4, '%snQFromZFromH'%self.label     )
+            self.out.branch('%sLFromZFromH%s'%(self.label,suffix)       , 'F', 4, '%snLFromZFromH'%self.label     )
+            self.out.branch('%sNuFromZFromH%s'%(self.label,suffix)      , 'F', 4, '%snNuFromZFromH'%self.label    )
+            self.out.branch('%sTauFromWFromH%s'%(self.label,suffix)     , 'F', 4, '%snTauFromWFromH'%self.label   )
+            self.out.branch('%sLFromTauFromWFromH%s'%(self.label,suffix)   , 'F', 4, '%snLFromTauFromWFromH'%self.label   )
+            self.out.branch('%sNuFromTauFromWFromH%s'%(self.label,suffix)  , 'F', 4, '%snNuFromTauFromWFromH'%self.label  )
+            self.out.branch('%shFromTauFromWFromH%s'%(self.label,suffix)   , 'F', 4, '%snhFromTauFromWFromH'%self.label   )
         # Some precomputed quantities of interest
 
         self.out.branch('%spTHgen'%self.label            , 'F')
@@ -77,6 +105,23 @@ class HiggsDiffGenTTH(Module):
         QFromWFromT      = []
         LFromWFromH      = []
         LFromWFromT      = []
+
+        TauFromH         = []
+        PiFromTauFromH   = []
+        KaFromTauFromH   = []
+        LFromTauFromH    = []
+        NuFromTauFromH   = []
+        TNuFromTauFromH  = []
+
+        ZFromH           = []
+        QFromZFromH      = []
+        LFromZFromH      = []
+        NuFromZFromH     = []
+
+        TauFromWFromH       = []
+        LFromTauFromWFromH  = []
+        NuFromTauFromWFromH = []
+        hFromTauFromWFromH  = []
 
         for part in genpar:
             # higgs
@@ -175,6 +220,96 @@ class HiggsDiffGenTTH(Module):
                     LFromWFromT.append(part)
                     if self.debug: print "the mother of this W is a hard top"
         
+            # Tau from H
+            if (abs(part.pdgId) in [15] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==25):
+                if(genpar[part.genPartIdxMother].statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])):
+                    TauFromH.append(part)
+                    if self.debug: print "it is a hard tau coming from a higgs"
+
+            # Pion from tau from H
+            if (abs(part.pdgId) in [111,211] and part.statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcessTauDecayProduct'])):
+                PiFromTauFromH.append(part)
+                if self.debug: print "it is a pion coming from a hard tau from a higgs"
+
+            # Kaon from tau from H
+            if (abs(part.pdgId) in [311,321] and part.statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcessTauDecayProduct'])):
+                KaFromTauFromH.append(part)
+                if self.debug: print "it is a kaon coming from a hard tau from a higgs"
+
+            # Lepton from tau from H
+            if (abs(part.pdgId) in [11,13] and part.statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcessTauDecayProduct'])):
+                LFromTauFromH.append(part)
+                if self.debug: print "it is a lepton coming from a hard tau from a higgs"
+
+            # lnu from tau from H
+            if (abs(part.pdgId) in [12,14] and part.statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcessTauDecayProduct'])):
+                NuFromTauFromH.append(part)
+                if self.debug: print "it is a lepton neutrino coming from a hard tau from a higgs"
+
+            # tnu from tau from H
+            if (abs(part.pdgId) in [16] and part.statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcessTauDecayProduct'])):
+                TNuFromTauFromH.append(part)
+                if self.debug: print "it is a tau neutrino coming from a hard tau from a higgs"
+
+            # Z from H
+            if (abs(part.pdgId) in [23] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==25):
+                if(genpar[part.genPartIdxMother].statusFlags &(1 << diffUtils.statusFlagsMap['isHardProcess'])):
+                    ZFromH.append(part)
+                    if self.debug: print "it is a hard Z coming from a higgs"
+
+            # Q from Z from H
+            if (abs(part.pdgId) in [1,2,3,4,5,6] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==23):
+                if (genpar[part.genPartIdxMother].genPartIdxMother >= 0 and abs(genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId)==25):
+                    QFromZFromH.append(part)
+                    if self.debug: print "it is a quark coming from a hard Z from a higgs"
+
+            # L from Z from H
+            if (abs(part.pdgId) in [11,13] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==23):
+                if (genpar[part.genPartIdxMother].genPartIdxMother >= 0 and abs(genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId)==25):
+                    LFromZFromH.append(part)
+                    if self.debug: print "it is a lepton coming from a hard Z from a higgs"
+
+            # Nu from Z from H
+            if (abs(part.pdgId) in [12,14] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId)==23):
+                if (genpar[part.genPartIdxMother].genPartIdxMother >= 0 and abs(genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId)==25):
+                    NuFromZFromH.append(part)
+                    if self.debug: print "it is a lepton neutrino coming from a hard Z from a higgs"
+
+            # Tau from W from H
+            if (abs(part.pdgId) in [15] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 24):
+                if (genpar[part.genPartIdxMother].genPartIdxMother >= 0 and abs(genpar[genpar[part.genPartIdxMother].genPartIdxMother].pdgId)==25):
+                    TauFromWFromH.append(part)
+                    if self.debug: print "it is a tau coming from a hard W from a higgs"
+
+            # L from tau from W from H
+            if (abs(part.pdgId) in [11,13] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 15):
+                mpart = genpar[part.genPartIdxMother]
+                while (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 15): mpart = genpar[mpart.genPartIdxMother]
+                if (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 24
+                        and genpar[mpart.genPartIdxMother].genPartIdxMother >= 0
+                        and abs(genpar[genpar[mpart.genPartIdxMother].genPartIdxMother].pdgId) == 25):
+                    LFromTauFromWFromH.append(part)
+                    if self.debug: print "it is a lepton coming from a tau from a hard W from a higgs"
+
+            # Nu from tau from W from H
+            if (abs(part.pdgId) in [12,14] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 15):
+                mpart = genpar[part.genPartIdxMother]
+                while (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 15): mpart = genpar[mpart.genPartIdxMother]
+                if (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 24
+                        and genpar[mpart.genPartIdxMother].genPartIdxMother >= 0
+                        and abs(genpar[genpar[mpart.genPartIdxMother].genPartIdxMother].pdgId) == 25):
+                    NuFromTauFromWFromH.append(part)
+                    if self.debug: print "it is a lepton neutrino coming from a tau from a hard W from a higgs"
+
+            # pion / kaon from tau from W from H
+            if (abs(part.pdgId) in [111,211,311,321] and part.genPartIdxMother >= 0 and abs(genpar[part.genPartIdxMother].pdgId) == 15):
+                mpart = genpar[part.genPartIdxMother]
+                while (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 15): mpart = genpar[mpart.genPartIdxMother]
+                if (mpart.genPartIdxMother >= 0 and abs(genpar[mpart.genPartIdxMother].pdgId) == 24
+                        and genpar[mpart.genPartIdxMother].genPartIdxMother >= 0
+                        and abs(genpar[genpar[mpart.genPartIdxMother].genPartIdxMother].pdgId) == 25):
+                    hFromTauFromWFromH.append(part)
+                    if self.debug: print "it is a pion or kaon coming from a tau from a hard W from a higgs"
 
             if self.debug:
                 # taus
@@ -227,6 +362,20 @@ class HiggsDiffGenTTH(Module):
         self.out.fillBranch('%snQFromWFromT'%self.label     , len(QFromWFromT))
         self.out.fillBranch('%snLFromWFromH'%self.label     , len(LFromWFromH))
         self.out.fillBranch('%snLFromWFromT'%self.label     , len(LFromWFromT)) 
+        self.out.fillBranch('%snTauFromH'%self.label        , len(TauFromH))
+        self.out.fillBranch('%snPiFromTauFromH'%self.label  , len(PiFromTauFromH))
+        self.out.fillBranch('%snKaFromTauFromH'%self.label  , len(KaFromTauFromH))
+        self.out.fillBranch('%snLFromTauFromH'%self.label   , len(LFromTauFromH))
+        self.out.fillBranch('%snNuFromTauFromH'%self.label  , len(NuFromTauFromH))
+        self.out.fillBranch('%snTNuFromTauFromH'%self.label , len(TNuFromTauFromH))
+        self.out.fillBranch('%snZFromH'%self.label          , len(ZFromH))
+        self.out.fillBranch('%snQFromZFromH'%self.label     , len(QFromZFromH))
+        self.out.fillBranch('%snLFromZFromH'%self.label     , len(LFromZFromH))
+        self.out.fillBranch('%snNuFromZFromH'%self.label    , len(NuFromZFromH))
+        self.out.fillBranch('%snTauFromWFromH'%self.label   , len(TauFromWFromH))
+        self.out.fillBranch('%snLFromTauFromWFromH'%self.label  , len(LFromTauFromWFromH))
+        self.out.fillBranch('%snNuFromTauFromWFromH'%self.label , len(NuFromTauFromWFromH))
+        self.out.fillBranch('%snhFromTauFromWFromH'%self.label  , len(hFromTauFromWFromH))
 
         self.out.fillBranch('%sHiggses_pt'%self.label          , [ part.p4().Pt() for part in Higgses         ]) 
         self.out.fillBranch('%sTfromhardprocess_pt'%self.label , [ part.p4().Pt() for part in Tfromhardprocess]) 
@@ -241,6 +390,20 @@ class HiggsDiffGenTTH(Module):
         self.out.fillBranch('%sQFromWFromT_pt'%self.label      , [ part.p4().Pt() for part in QFromWFromT     ]) 
         self.out.fillBranch('%sLFromWFromH_pt'%self.label      , [ part.p4().Pt() for part in LFromWFromH     ]) 
         self.out.fillBranch('%sLFromWFromT_pt'%self.label      , [ part.p4().Pt() for part in LFromWFromT     ]) 
+        self.out.fillBranch('%sTauFromH_pt'%self.label         , [ part.p4().Pt() for part in TauFromH        ])
+        self.out.fillBranch('%sPiFromTauFromH_pt'%self.label   , [ part.p4().Pt() for part in PiFromTauFromH  ])
+        self.out.fillBranch('%sKaFromTauFromH_pt'%self.label   , [ part.p4().Pt() for part in KaFromTauFromH  ])
+        self.out.fillBranch('%sLFromTauFromH_pt'%self.label    , [ part.p4().Pt() for part in LFromTauFromH   ])
+        self.out.fillBranch('%sNuFromTauFromH_pt'%self.label   , [ part.p4().Pt() for part in NuFromTauFromH  ])
+        self.out.fillBranch('%sTNuFromTauFromH_pt'%self.label  , [ part.p4().Pt() for part in TNuFromTauFromH ])
+        self.out.fillBranch('%sZFromH_pt'%self.label           , [ part.p4().Pt() for part in ZFromH          ])
+        self.out.fillBranch('%sQFromZFromH_pt'%self.label      , [ part.p4().Pt() for part in QFromZFromH     ])
+        self.out.fillBranch('%sLFromZFromH_pt'%self.label      , [ part.p4().Pt() for part in LFromZFromH     ])
+        self.out.fillBranch('%sNuFromZFromH_pt'%self.label     , [ part.p4().Pt() for part in NuFromZFromH    ])
+        self.out.fillBranch('%sTauFromWFromH_pt'%self.label    , [ part.p4().Pt() for part in TauFromWFromH   ])
+        self.out.fillBranch('%sLFromTauFromWFromH_pt'%self.label   , [ part.p4().Pt() for part in LFromTauFromWFromH  ])
+        self.out.fillBranch('%sNuFromTauFromWFromH_pt'%self.label  , [ part.p4().Pt() for part in NuFromTauFromWFromH ])
+        self.out.fillBranch('%shFromTauFromWFromH_pt'%self.label   , [ part.p4().Pt() for part in hFromTauFromWFromH  ])
 
         self.out.fillBranch('%sHiggses_eta'%self.label          , [ part.p4().Eta() for part in Higgses         ]) 
         self.out.fillBranch('%sTfromhardprocess_eta'%self.label , [ part.p4().Eta() for part in Tfromhardprocess]) 
@@ -255,6 +418,20 @@ class HiggsDiffGenTTH(Module):
         self.out.fillBranch('%sQFromWFromT_eta'%self.label      , [ part.p4().Eta() for part in QFromWFromT     ]) 
         self.out.fillBranch('%sLFromWFromH_eta'%self.label      , [ part.p4().Eta() for part in LFromWFromH     ]) 
         self.out.fillBranch('%sLFromWFromT_eta'%self.label      , [ part.p4().Eta() for part in LFromWFromT     ]) 
+        self.out.fillBranch('%sTauFromH_eta'%self.label         , [ part.p4().Eta() for part in TauFromH        ])
+        self.out.fillBranch('%sPiFromTauFromH_eta'%self.label   , [ part.p4().Eta() for part in PiFromTauFromH  ])
+        self.out.fillBranch('%sKaFromTauFromH_eta'%self.label   , [ part.p4().Eta() for part in KaFromTauFromH  ])
+        self.out.fillBranch('%sLFromTauFromH_eta'%self.label    , [ part.p4().Eta() for part in LFromTauFromH   ])
+        self.out.fillBranch('%sNuFromTauFromH_eta'%self.label   , [ part.p4().Eta() for part in NuFromTauFromH  ])
+        self.out.fillBranch('%sTNuFromTauFromH_eta'%self.label  , [ part.p4().Eta() for part in TNuFromTauFromH ])
+        self.out.fillBranch('%sZFromH_eta'%self.label           , [ part.p4().Eta() for part in ZFromH          ])
+        self.out.fillBranch('%sQFromZFromH_eta'%self.label      , [ part.p4().Eta() for part in QFromZFromH     ])
+        self.out.fillBranch('%sLFromZFromH_eta'%self.label      , [ part.p4().Eta() for part in LFromZFromH     ])
+        self.out.fillBranch('%sNuFromZFromH_eta'%self.label     , [ part.p4().Eta() for part in NuFromZFromH    ])
+        self.out.fillBranch('%sTauFromWFromH_eta'%self.label    , [ part.p4().Eta() for part in TauFromWFromH   ])
+        self.out.fillBranch('%sLFromTauFromWFromH_eta'%self.label   , [ part.p4().Eta() for part in LFromTauFromWFromH  ])
+        self.out.fillBranch('%sNuFromTauFromWFromH_eta'%self.label  , [ part.p4().Eta() for part in NuFromTauFromWFromH ])
+        self.out.fillBranch('%shFromTauFromWFromH_eta'%self.label   , [ part.p4().Eta() for part in hFromTauFromWFromH  ])
 
         self.out.fillBranch('%sHiggses_phi'%self.label          , [ part.p4().Phi() for part in Higgses         ]) 
         self.out.fillBranch('%sTfromhardprocess_phi'%self.label , [ part.p4().Phi() for part in Tfromhardprocess]) 
@@ -269,6 +446,20 @@ class HiggsDiffGenTTH(Module):
         self.out.fillBranch('%sQFromWFromT_phi'%self.label      , [ part.p4().Phi() for part in QFromWFromT     ]) 
         self.out.fillBranch('%sLFromWFromH_phi'%self.label      , [ part.p4().Phi() for part in LFromWFromH     ]) 
         self.out.fillBranch('%sLFromWFromT_phi'%self.label      , [ part.p4().Phi() for part in LFromWFromT     ]) 
+        self.out.fillBranch('%sTauFromH_phi'%self.label         , [ part.p4().Phi() for part in TauFromH        ])
+        self.out.fillBranch('%sPiFromTauFromH_phi'%self.label   , [ part.p4().Phi() for part in PiFromTauFromH  ])
+        self.out.fillBranch('%sKaFromTauFromH_phi'%self.label   , [ part.p4().Phi() for part in KaFromTauFromH  ])
+        self.out.fillBranch('%sLFromTauFromH_phi'%self.label    , [ part.p4().Phi() for part in LFromTauFromH   ])
+        self.out.fillBranch('%sNuFromTauFromH_phi'%self.label   , [ part.p4().Phi() for part in NuFromTauFromH  ])
+        self.out.fillBranch('%sTNuFromTauFromH_phi'%self.label  , [ part.p4().Phi() for part in TNuFromTauFromH ])
+        self.out.fillBranch('%sZFromH_phi'%self.label           , [ part.p4().Phi() for part in ZFromH          ])
+        self.out.fillBranch('%sQFromZFromH_phi'%self.label      , [ part.p4().Phi() for part in QFromZFromH     ])
+        self.out.fillBranch('%sLFromZFromH_phi'%self.label      , [ part.p4().Phi() for part in LFromZFromH     ])
+        self.out.fillBranch('%sNuFromZFromH_phi'%self.label     , [ part.p4().Phi() for part in NuFromZFromH    ])
+        self.out.fillBranch('%sTauFromWFromH_phi'%self.label    , [ part.p4().Phi() for part in TauFromWFromH   ])
+        self.out.fillBranch('%sLFromTauFromWFromH_phi'%self.label   , [ part.p4().Phi() for part in LFromTauFromWFromH  ])
+        self.out.fillBranch('%sNuFromTauFromWFromH_phi'%self.label  , [ part.p4().Phi() for part in NuFromTauFromWFromH ])
+        self.out.fillBranch('%shFromTauFromWFromH_phi'%self.label   , [ part.p4().Phi() for part in hFromTauFromWFromH  ])
 
         self.out.fillBranch('%sHiggses_mass'%self.label          , [ part.p4().M() for part in Higgses         ]) 
         self.out.fillBranch('%sTfromhardprocess_mass'%self.label , [ part.p4().M() for part in Tfromhardprocess]) 
@@ -283,6 +474,20 @@ class HiggsDiffGenTTH(Module):
         self.out.fillBranch('%sQFromWFromT_mass'%self.label      , [ part.p4().M() for part in QFromWFromT     ]) 
         self.out.fillBranch('%sLFromWFromH_mass'%self.label      , [ part.p4().M() for part in LFromWFromH     ]) 
         self.out.fillBranch('%sLFromWFromT_mass'%self.label      , [ part.p4().M() for part in LFromWFromT     ]) 
+        self.out.fillBranch('%sTauFromH_mass'%self.label         , [ part.p4().M() for part in TauFromH        ])
+        self.out.fillBranch('%sPiFromTauFromH_mass'%self.label   , [ part.p4().M() for part in PiFromTauFromH  ])
+        self.out.fillBranch('%sKaFromTauFromH_mass'%self.label   , [ part.p4().M() for part in KaFromTauFromH  ])
+        self.out.fillBranch('%sLFromTauFromH_mass'%self.label    , [ part.p4().M() for part in LFromTauFromH   ])
+        self.out.fillBranch('%sNuFromTauFromH_mass'%self.label   , [ part.p4().M() for part in NuFromTauFromH  ])
+        self.out.fillBranch('%sTNuFromTauFromH_mass'%self.label  , [ part.p4().M() for part in TNuFromTauFromH ])
+        self.out.fillBranch('%sZFromH_mass'%self.label           , [ part.p4().M() for part in ZFromH          ])
+        self.out.fillBranch('%sQFromZFromH_mass'%self.label      , [ part.p4().M() for part in QFromZFromH     ])
+        self.out.fillBranch('%sLFromZFromH_mass'%self.label      , [ part.p4().M() for part in LFromZFromH     ])
+        self.out.fillBranch('%sNuFromZFromH_mass'%self.label     , [ part.p4().M() for part in NuFromZFromH    ])
+        self.out.fillBranch('%sTauFromWFromH_mass'%self.label    , [ part.p4().M() for part in TauFromWFromH   ])
+        self.out.fillBranch('%sLFromTauFromWFromH_mass'%self.label   , [ part.p4().M() for part in LFromTauFromWFromH  ])
+        self.out.fillBranch('%sNuFromTauFromWFromH_mass'%self.label  , [ part.p4().M() for part in NuFromTauFromWFromH ])
+        self.out.fillBranch('%shFromTauFromWFromH_mass'%self.label   , [ part.p4().M() for part in hFromTauFromWFromH  ])
 
         # Fill branches for some precomputed variables
         self.out.fillBranch('%spTHgen'%self.label, Higgses[0].p4().Pt() if len(Higgses)==1 else -99)

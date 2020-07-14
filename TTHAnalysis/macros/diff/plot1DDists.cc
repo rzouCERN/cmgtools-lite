@@ -53,16 +53,8 @@
   float Hreco_closestJet_ptres_ToQ2FromWFromH;
   float Hreco_closestJet_delR_ToQ1FromWFromH;
   float Hreco_closestJet_delR_ToQ2FromWFromH;
-  float Hreco_closestJet_flavour_ToQ1FromWFromH;
-  float Hreco_closestJet_flavour_ToQ2FromWFromH;
-//  float Hreco_closestJetInPTRes_pt_ToQ1FromWFromH;
-//  float Hreco_closestJetInPTRes_pt_ToQ2FromWFromH;
-//  float Hreco_closestJetInPTRes_ptres_ToQ1FromWFromH;
-//  float Hreco_closestJetInPTRes_ptres_ToQ2FromWFromH;
-//  float Hreco_closestJetInPTRes_delR_ToQ1FromWFromH;
-//  float Hreco_closestJetInPTRes_delR_ToQ2FromWFromH;
-//  float Hreco_closestJetInPTRes_flavour_ToQ1FromWFromH;
-//  float Hreco_closestJetInPTRes_flavour_ToQ2FromWFromH;
+//  float Hreco_closestJet_flavour_ToQ1FromWFromH;
+//  float Hreco_closestJet_flavour_ToQ2FromWFromH;
   
   // lists from gen loop
   int Hreco_nQFromWFromH;
@@ -115,16 +107,8 @@
   ft->SetBranchAddress("Hreco_closestJet_ptres_ToQ2FromWFromH",&Hreco_closestJet_ptres_ToQ2FromWFromH);
   ft->SetBranchAddress("Hreco_closestJet_delR_ToQ1FromWFromH",&Hreco_closestJet_delR_ToQ1FromWFromH);
   ft->SetBranchAddress("Hreco_closestJet_delR_ToQ2FromWFromH",&Hreco_closestJet_delR_ToQ2FromWFromH);
-  ft->SetBranchAddress("Hreco_closestJet_flavour_ToQ1FromWFromH",&Hreco_closestJet_flavour_ToQ1FromWFromH);
-  ft->SetBranchAddress("Hreco_closestJet_flavour_ToQ2FromWFromH",&Hreco_closestJet_flavour_ToQ2FromWFromH);
-//  ft->SetBranchAddress("Hreco_closestJetInPTRes_pt_ToQ1FromWFromH",&Hreco_closestJetInPTRes_pt_ToQ1FromWFromH);
-//  ft->SetBranchAddress("Hreco_closestJetInPTRes_pt_ToQ2FromWFromH",&Hreco_closestJetInPTRes_pt_ToQ2FromWFromH);
-//  ft->SetBranchAddress("Hreco_closestJetInPTRes_ptres_ToQ1FromWFromH",&Hreco_closestJetInPTRes_ptres_ToQ1FromWFromH);
-//  ft->SetBranchAddress("Hreco_closestJetInPTRes_ptres_ToQ2FromWFromH",&Hreco_closestJetInPTRes_ptres_ToQ2FromWFromH);
-//  ft->SetBranchAddress("Hreco_closestJetInPTRes_delR_ToQ1FromWFromH",&Hreco_closestJetInPTRes_delR_ToQ1FromWFromH);
-//  ft->SetBranchAddress("Hreco_closestJetInPTRes_delR_ToQ2FromWFromH",&Hreco_closestJetInPTRes_delR_ToQ2FromWFromH);
-//  ft->SetBranchAddress("Hreco_closestJetInPTRes_flavour_ToQ1FromWFromH",&Hreco_closestJetInPTRes_flavour_ToQ1FromWFromH);
-//  ft->SetBranchAddress("Hreco_closestJetInPTRes_flavour_ToQ2FromWFromH",&Hreco_closestJetInPTRes_flavour_ToQ2FromWFromH);
+//  ft->SetBranchAddress("Hreco_closestJet_flavour_ToQ1FromWFromH",&Hreco_closestJet_flavour_ToQ1FromWFromH);
+//  ft->SetBranchAddress("Hreco_closestJet_flavour_ToQ2FromWFromH",&Hreco_closestJet_flavour_ToQ2FromWFromH);
   
   // lists from gen loop
   ft->SetBranchAddress("Hreco_nQFromWFromH",&Hreco_nQFromWFromH);
@@ -169,13 +153,9 @@
 
   TH1D *hst_closestJet_delR_ToQ1FromWFromH   = new TH1D("hst_closestJet_delR_Q1","hst_closestJet_delR_Q1",nBins,0,3);
   TH1D *hst_closestJet_ptres_ToQ1FromWFromH  = new TH1D("hst_closestJet_ptres_Q1","hst_closestJet_ptres_Q1",nBins,-2,3);
-//  TH1D *hst_closestJetInPTRes_delR_ToQ1FromWFromH  = new TH1D("hst_closestJetInPTRes_delR_Q1","hst_closestJetInPTRes_delR_Q1",nBins,0,3);
-//  TH1D *hst_closestJetInPTRes_ptres_ToQ1FromWFromH = new TH1D("hst_closestJetInPTRes_ptres_Q1","hst_closestJetInPTRes_ptres_Q1",nBins,-2,3);
 
   TH1D *hst_closestJet_delR_ToQ2FromWFromH   = new TH1D("hst_closestJet_delR_Q2","hst_closestJet_delR_Q2",nBins,0,3);
   TH1D *hst_closestJet_ptres_ToQ2FromWFromH  = new TH1D("hst_closestJet_ptres_Q2","hst_closestJet_ptres_Q2",nBins,-2,3);
-//  TH1D *hst_closestJetInPTRes_delR_ToQ2FromWFromH  = new TH1D("hst_closestJetInPTRes_delR_Q2","hst_closestJetInPTRes_delR_Q2",nBins,0,3);
-//  TH1D *hst_closestJetInPTRes_ptres_ToQ2FromWFromH = new TH1D("hst_closestJetInPTRes_ptres_Q2","hst_closestJetInPTRes_ptres_Q2",nBins,-2,3);
 
   TH1D *hst_matchRank = new TH1D("hst_matchRank","hst_matchRank",7,-0.5,6.5);
   TH1D *hst_Wmass = new TH1D("hst_Wmass","hst_Wmass",nBins,45,115);
@@ -207,8 +187,8 @@
 
   TH1D *hst_NSelectedMatchesVsNJet = new TH1D("hst_NSelectedMatchesVsNJet","hst_NSelectedMatchesVsNJet",20,-0.5,19.5);
 
-  TH2D *hst_flavourMatchEffQ1 = new TH2D("hst_flavourMatchEffQ1","hst_flavourMatchEffQ1",80,0.0125,2.0125,80,0.0125,2.0125); // FIXME
-  TH2D *hst_flavourMatchEffQ2 = new TH2D("hst_flavourMatchEffQ2","hst_flavourMatchEffQ2",80,0.0125,2.0125,80,0.0125,2.0125); // FIXME
+//  TH2D *hst_flavourMatchEffQ1 = new TH2D("hst_flavourMatchEffQ1","hst_flavourMatchEffQ1",80,0.0125,2.0125,80,0.0125,2.0125); // FIXME
+//  TH2D *hst_flavourMatchEffQ2 = new TH2D("hst_flavourMatchEffQ2","hst_flavourMatchEffQ2",80,0.0125,2.0125,80,0.0125,2.0125); // FIXME
 
   TH1D *hst_Q1VsPt = new TH1D("hst_Q1VsPt","hst_Q1VsPt",nBins,-0.5,299.5);
   TH1D *hst_Q1MatchVsPt = new TH1D("hst_Q1MatchVsPt","hst_Q1MatchVsPt",nBins,-0.5,299.5);
@@ -236,18 +216,18 @@
   int nEventsJetMatchesQ1NoCond       = 0;
   int nEventsJetMatchesQ2NoCond       = 0;
   int nEvents2UniqueMatchedJetsNoCond = 0;
-  int nEventsQ1MatchFlavour[nFMBins][nFMBins];
-  int nEventsQ1Total[nFMBins][nFMBins];
-  int nEventsQ2MatchFlavour[nFMBins][nFMBins];
-  int nEventsQ2Total[nFMBins][nFMBins];
-  for (int i=0; i<nFMBins; i++) {
-    for (int j=0; j<nFMBins; j++) {
-      nEventsQ1MatchFlavour[i][j] = 0;
-      nEventsQ1Total[i][j] = 0;
-      nEventsQ2MatchFlavour[i][j] = 0;;
-      nEventsQ2Total[i][j] = 0;
-    }
-  }
+//  int nEventsQ1MatchFlavour[nFMBins][nFMBins];
+//  int nEventsQ1Total[nFMBins][nFMBins];
+//  int nEventsQ2MatchFlavour[nFMBins][nFMBins];
+//  int nEventsQ2Total[nFMBins][nFMBins];
+//  for (int i=0; i<nFMBins; i++) {
+//    for (int j=0; j<nFMBins; j++) {
+//      nEventsQ1MatchFlavour[i][j] = 0;
+//      nEventsQ1Total[i][j] = 0;
+//      nEventsQ2MatchFlavour[i][j] = 0;
+//      nEventsQ2Total[i][j] = 0;
+//    }
+//  }
   for (int i=0; i<ft->GetEntries(); i++)
   {
     ft->GetEntry(i);
@@ -277,33 +257,29 @@
       hst_NSelectedMatchesVsNJet->Fill(Hreco_nJetsInCollection);
     }
     // Calculate flavour matching plot
-    for (int i=0; i<nFMBins; i++) {
-      for (int j=0; j<nFMBins; j++) {
-        if ((Hreco_closestJet_delR_ToQ1FromWFromH < (float)(i+1)*((float)dRMax/(float)nFMBins)) && (abs(Hreco_closestJet_ptres_ToQ1FromWFromH) < (float)(j+1)*((float)dPtMax/(float)nFMBins))) {
-          if (Hreco_closestJet_delR_ToQ1FromWFromH != -99 && abs(Hreco_closestJet_ptres_ToQ1FromWFromH) != -99) {
-            nEventsQ1Total[i][j] ++;
-            nEventsQ1MatchFlavour[i][j] += (Hreco_closestJet_flavour_ToQ1FromWFromH == Hreco_quark1Flavour);
-          }
-        }
-        if ((Hreco_closestJet_delR_ToQ2FromWFromH < (float)(i+1)*((float)dRMax/(float)nFMBins)) && (abs(Hreco_closestJet_ptres_ToQ2FromWFromH) < (float)(j+1)*((float)dPtMax/(float)nFMBins))) {
-          if (Hreco_closestJet_delR_ToQ2FromWFromH != -99 && abs(Hreco_closestJet_ptres_ToQ2FromWFromH) != -99) {
-            nEventsQ2Total[i][j] ++;
-            nEventsQ2MatchFlavour[i][j] += (Hreco_closestJet_flavour_ToQ2FromWFromH == Hreco_quark2Flavour);
-          }
-        }
-      }
-    }
+//    for (int i=0; i<nFMBins; i++) {
+//      for (int j=0; j<nFMBins; j++) {
+//        if ((Hreco_closestJet_delR_ToQ1FromWFromH < (float)(i+1)*((float)dRMax/(float)nFMBins)) && (abs(Hreco_closestJet_ptres_ToQ1FromWFromH) < (float)(j+1)*((float)dPtMax/(float)nFMBins))) {
+//          if (Hreco_closestJet_delR_ToQ1FromWFromH != -99 && abs(Hreco_closestJet_ptres_ToQ1FromWFromH) != -99) {
+//            nEventsQ1Total[i][j] ++;
+//            nEventsQ1MatchFlavour[i][j] += (Hreco_closestJet_flavour_ToQ1FromWFromH == Hreco_quark1Flavour);
+//          }
+//        }
+//        if ((Hreco_closestJet_delR_ToQ2FromWFromH < (float)(i+1)*((float)dRMax/(float)nFMBins)) && (abs(Hreco_closestJet_ptres_ToQ2FromWFromH) < (float)(j+1)*((float)dPtMax/(float)nFMBins))) {
+//          if (Hreco_closestJet_delR_ToQ2FromWFromH != -99 && abs(Hreco_closestJet_ptres_ToQ2FromWFromH) != -99) {
+//            nEventsQ2Total[i][j] ++;
+//            nEventsQ2MatchFlavour[i][j] += (Hreco_closestJet_flavour_ToQ2FromWFromH == Hreco_quark2Flavour);
+//          }
+//        }
+//      }
+//    }
 
     // Plot DelR and PTRes Distributions
     if (Hreco_closestJet_delR_ToQ1FromWFromH != -99) hst_closestJet_delR_ToQ1FromWFromH->Fill(Hreco_closestJet_delR_ToQ1FromWFromH);
     if (Hreco_closestJet_ptres_ToQ1FromWFromH != -99) hst_closestJet_ptres_ToQ1FromWFromH->Fill(Hreco_closestJet_ptres_ToQ1FromWFromH);
-//    if (Hreco_closestJetInPTRes_delR_ToQ1FromWFromH != -99) hst_closestJetInPTRes_delR_ToQ1FromWFromH->Fill(Hreco_closestJetInPTRes_delR_ToQ1FromWFromH);
-//    if (Hreco_closestJetInPTRes_ptres_ToQ1FromWFromH != -99) hst_closestJetInPTRes_ptres_ToQ1FromWFromH->Fill(Hreco_closestJetInPTRes_ptres_ToQ1FromWFromH);
 
     if (Hreco_closestJet_delR_ToQ2FromWFromH != -99) hst_closestJet_delR_ToQ2FromWFromH->Fill(Hreco_closestJet_delR_ToQ2FromWFromH);
     if (Hreco_closestJet_ptres_ToQ2FromWFromH != -99) hst_closestJet_ptres_ToQ2FromWFromH->Fill(Hreco_closestJet_ptres_ToQ2FromWFromH);
-//    if (Hreco_closestJetInPTRes_delR_ToQ2FromWFromH != -99) hst_closestJetInPTRes_delR_ToQ2FromWFromH->Fill(Hreco_closestJetInPTRes_delR_ToQ2FromWFromH);
-//    if (Hreco_closestJetInPTRes_ptres_ToQ2FromWFromH != -99) hst_closestJetInPTRes_ptres_ToQ2FromWFromH->Fill(Hreco_closestJetInPTRes_ptres_ToQ2FromWFromH);
 
     if (Hreco_closestJet_delR_ToQ1FromWFromH != -99) hst_closest2DPTResVsDr->Fill(Hreco_closestJet_ptres_ToQ1FromWFromH,Hreco_closestJet_delR_ToQ1FromWFromH);
     if (Hreco_closestJet_delR_ToQ2FromWFromH != -99) hst_closest2DPTResVsDr->Fill(Hreco_closestJet_ptres_ToQ2FromWFromH,Hreco_closestJet_delR_ToQ2FromWFromH);
@@ -408,14 +384,14 @@
   double totalcorr   = (NN*xxzz - xx*zz)/sqrt((NN*xxxx-xx*xx)*(NN*zzzz-zz*zz));
 
   // Populate 2D flavour matching histograms
-  for (int i=0; i<nFMBins; i++) {
-    for (int j=0; j<nFMBins; j++) {
-      float Q1frac = (float) nEventsQ1MatchFlavour[i][j] / (float) nEventsQ1Total[i][j];
-      hst_flavourMatchEffQ1->Fill((float)(i+1)*((float)dRMax/(float)nFMBins),(float)(j+1)*((float)dPtMax/(float)nFMBins),Q1frac);
-      float Q2frac = (float) nEventsQ2MatchFlavour[i][j] / (float) nEventsQ2Total[i][j];
-      hst_flavourMatchEffQ2->Fill((float)(i+1)*((float)dRMax/(float)nFMBins),(float)(j+1)*((float)dPtMax/(float)nFMBins),Q2frac);
-    }
-  }
+//  for (int i=0; i<nFMBins; i++) {
+//    for (int j=0; j<nFMBins; j++) {
+//      float Q1frac = (float) nEventsQ1MatchFlavour[i][j] / (float) nEventsQ1Total[i][j];
+//      hst_flavourMatchEffQ1->Fill((float)(i+1)*((float)dRMax/(float)nFMBins),(float)(j+1)*((float)dPtMax/(float)nFMBins),Q1frac);
+//      float Q2frac = (float) nEventsQ2MatchFlavour[i][j] / (float) nEventsQ2Total[i][j];
+//      hst_flavourMatchEffQ2->Fill((float)(i+1)*((float)dRMax/(float)nFMBins),(float)(j+1)*((float)dPtMax/(float)nFMBins),Q2frac);
+//    }
+//  }
 
   // Calculate efficiency plots for pt and eta
   double A1, B1, A2, B2;
@@ -775,31 +751,31 @@
   leg13->Draw();
   can13->SaveAs("1DDistPlots/plot_LeadingQuarkPt1JetByFlavour.png");
 
-  TCanvas *can14 = new TCanvas();
-  hst_flavourMatchEffQ1->SetStats(0);
-  hst_flavourMatchEffQ1->GetXaxis()->SetTitle("delR Match Criteria");
-  hst_flavourMatchEffQ1->GetYaxis()->SetTitle("ptres Match Criteria");
-  hst_flavourMatchEffQ1->GetZaxis()->SetRangeUser(0.5,1);
-  hst_flavourMatchEffQ1->SetTitle("Fraction of Events where jet matched to leading Q also matches parton flavour");
-  hst_flavourMatchEffQ1->Draw("colz");
-  TLatex tex14(.4,.85,VetoString);
-  tex14.SetTextSize(0.03);
-  tex14.SetNDC(kTRUE);
-  tex14.Draw();
-  can14->SaveAs("1DDistPlots/plot_MatchEfficiency_Q1.png");
+//  TCanvas *can14 = new TCanvas();
+//  hst_flavourMatchEffQ1->SetStats(0);
+//  hst_flavourMatchEffQ1->GetXaxis()->SetTitle("delR Match Criteria");
+//  hst_flavourMatchEffQ1->GetYaxis()->SetTitle("ptres Match Criteria");
+//  hst_flavourMatchEffQ1->GetZaxis()->SetRangeUser(0.5,1);
+//  hst_flavourMatchEffQ1->SetTitle("Fraction of Events where jet matched to leading Q also matches parton flavour");
+//  hst_flavourMatchEffQ1->Draw("colz");
+//  TLatex tex14(.4,.85,VetoString);
+//  tex14.SetTextSize(0.03);
+//  tex14.SetNDC(kTRUE);
+//  tex14.Draw();
+//  can14->SaveAs("1DDistPlots/plot_MatchEfficiency_Q1.png");
 
-  TCanvas *can15 = new TCanvas();
-  hst_flavourMatchEffQ2->SetStats(0);
-  hst_flavourMatchEffQ2->GetXaxis()->SetTitle("delR Match Criteria");
-  hst_flavourMatchEffQ2->GetYaxis()->SetTitle("ptres Match Criteria");
-  hst_flavourMatchEffQ2->GetZaxis()->SetRangeUser(0.5,1);
-  hst_flavourMatchEffQ2->SetTitle("Fraction of Events where jet matched to sub-leading Q also matches parton flavour");
-  hst_flavourMatchEffQ2->Draw("colz");
-  TLatex tex15(.4,.85,VetoString);
-  tex15.SetTextSize(0.03);
-  tex15.SetNDC(kTRUE);
-  tex15.Draw();
-  can15->SaveAs("1DDistPlots/plot_MatchEfficiency_Q2.png");
+//  TCanvas *can15 = new TCanvas();
+//  hst_flavourMatchEffQ2->SetStats(0);
+//  hst_flavourMatchEffQ2->GetXaxis()->SetTitle("delR Match Criteria");
+//  hst_flavourMatchEffQ2->GetYaxis()->SetTitle("ptres Match Criteria");
+//  hst_flavourMatchEffQ2->GetZaxis()->SetRangeUser(0.5,1);
+//  hst_flavourMatchEffQ2->SetTitle("Fraction of Events where jet matched to sub-leading Q also matches parton flavour");
+//  hst_flavourMatchEffQ2->Draw("colz");
+//  TLatex tex15(.4,.85,VetoString);
+//  tex15.SetTextSize(0.03);
+//  tex15.SetNDC(kTRUE);
+//  tex15.Draw();
+//  can15->SaveAs("1DDistPlots/plot_MatchEfficiency_Q2.png");
 
   TCanvas *can16 = new TCanvas();
   hst_MTrueGen->GetXaxis()->SetTitle("M Visible");
