@@ -48,6 +48,8 @@ class HiggsDiffRecoTTH(Module):
             self.out.branch('%snFatJetsNearLeptonFromHiggs%s'%(self.label,jesLabel) , 'I')
             self.out.branch('%snLeptonsFromHiggs%s'%(self.label,jesLabel)   , 'I')    
             self.out.branch('%snJetsFromHiggs%s'%(self.label,jesLabel)   , 'I')    
+            self.out.branch('%snFO%s'%(self.label,jesLabel)   , 'I')
+            self.out.branch('%snJetsAfterCuts%s'%(self.label,jesLabel)   , 'I')
             # Useful quadrimomenta
             # We need to save three entire collections, because the triplet selection might select different objects when JEC changes
             for suffix in ["_pt", "_eta", "_phi", "_mass"]:
@@ -70,7 +72,10 @@ class HiggsDiffRecoTTH(Module):
     def analyze(self, event):
         # Some useful input parameters
         year=getattr(event,"year")
-        btagvetoval= HiggsRecoTTHbtagwps["DeepFlav_%d_%s"%(year,self.btagDeepCSVveto)][1]
+        if self.btagDeepCSVveto in ['VL','L','M','T','VT']:
+            btagvetoval = HiggsRecoTTHbtagwps["DeepFlav_%d_%s"%(year,self.btagDeepCSVveto)][1]
+        else:
+            btagvetoval = self.btagDeepCSVveto
 
         # Input collections and maps
         closestFatJetToLeptonVars = []
@@ -141,7 +146,7 @@ class HiggsDiffRecoTTH(Module):
                     # Optionally, later constrain the mass to the W PDG mass (although we use this only to build the candidate, and we store it without constraint)
                     W = j1+j2
                     mW = W.M()
-                    if mW<self.cuts_mW_had[0] or mW>self.cuts_mW_had[1]: continue
+#                    if mW<self.cuts_mW_had[0] or mW>self.cuts_mW_had[1]: continue
 
                     Wconstr = W
                     if self.use_Wmass_constraint:
@@ -152,7 +157,7 @@ class HiggsDiffRecoTTH(Module):
                     Hvisconstr = lep+Wconstr
                     mHvisconstr = Hvisconstr.M()
                     pTHvisconstr = Hvisconstr.Pt()
-                    if mHvisconstr<self.cuts_mH_vis[0] or mHvisconstr>self.cuts_mH_vis[1]: continue
+#                    if mHvisconstr<self.cuts_mH_vis[0] or mHvisconstr>self.cuts_mH_vis[1]: continue
 
                     # Store all non-rejected candidates
                     mindR = min(lep.DeltaR(j1),lep.DeltaR(j2))
@@ -197,6 +202,8 @@ class HiggsDiffRecoTTH(Module):
             # Counters
             self.out.fillBranch('%snLeptonsFromHiggs%s'%(self.label,jesLabel), len(ls))
             self.out.fillBranch('%snJetsFromHiggs%s'%(self.label,jesLabel)   , len(js))    
+            self.out.fillBranch('%snFO%s'%(self.label,jesLabel)              , nFO)
+            self.out.fillBranch('%snJetsAfterCuts%s'%(self.label,jesLabel)   , len(jetsNoTopNoB)) 
 
             # Useful quadrimomenta
             # The reconstructed visible Higgs (somehow one lepton will be duplicate. Consider storing the index)
@@ -234,6 +241,7 @@ higgsDiffRecoTTH = lambda : HiggsDiffRecoTTH(label='Hreco_',
                                              cuts_mH_vis = (80.,140.),
                                              use_Wmass_constraint = True,
                                              btagDeepCSVveto = 'M', # or 'M'
+                                             doSystJEC=True,
                                              useTopTagger=False)
 higgsDiffRecoTTH_noWmassConstraint = lambda : HiggsDiffRecoTTH(label='Hreco_',
                                                                cut_BDT_rTT_score = 0.0,
@@ -241,6 +249,7 @@ higgsDiffRecoTTH_noWmassConstraint = lambda : HiggsDiffRecoTTH(label='Hreco_',
                                                                cuts_mH_vis = (80.,140.),
                                                                use_Wmass_constraint = False,
                                                                btagDeepCSVveto = 'M', # or 'M'
+                                                               doSystJEC=True,
                                                                useTopTagger=False)
 
 
