@@ -10,7 +10,7 @@ import CMGTools.TTHAnalysis.tools.higgsDiffUtils as diffUtils
 from PhysicsTools.Heppy.physicsobjects.Jet import _btagWPs as HiggsRecoTTHbtagwps
 
 class HiggsDiffCompTTH(Module):
-    def __init__(self,label="_Recl",cut_BDT_rTT_score = 0.0, cuts_mW_had = (50.,110.), cuts_mH_vis = (90.,130.), use_Wmass_constraint=True, attemptDisentangling=True, btagDeepCSVveto = 'L', doSystJEC=False, useTopTagger=True, debug=False):
+    def __init__(self,label="_Recl",cut_BDT_rTT_score = 0.0, cuts_mW_had = (50.,110.), cuts_mH_vis = (90.,130.), use_Wmass_constraint=True, attemptDisentangling=True, btagDeepCSVveto = 'L', doSystJEC=True, useTopTagger=True, debug=False):
         self.debug = debug
         self.useTopTagger = useTopTagger
         self.label = label
@@ -122,6 +122,9 @@ class HiggsDiffCompTTH(Module):
         leps   = [allLeps[selLeps[i]] for i in xrange(nFO)]
         thejets     = [x for x in Collection(event,"JetSel_Recl","nJetSel_Recl")]
         thejetsNoB     = [j for j in thejets if j.btagDeepB<btagvetoval]
+        thejetsmore = [x for x in Collection(event,"Jet")]
+        thejetsphieta = [[j.phi, j.eta] for j in thejets]
+        thejetsmoreskimmed = [j for j in thejetsmore if [j.phi,j.eta] in thejetsphieta]
 
         # Get right & wrong lepton index
         rightlep = -1
@@ -149,10 +152,10 @@ class HiggsDiffCompTTH(Module):
             j1top = getattr(event,"BDThttTT_eventReco_iJetSel1%s"%jesLabel)
             j2top = getattr(event,"BDThttTT_eventReco_iJetSel2%s"%jesLabel)
             j3top = getattr(event,"BDThttTT_eventReco_iJetSel3%s"%jesLabel)
-            j1 = thejets[int(j1top)]
-            j2 = thejets[int(j2top)]
-            j3 = thejets[int(j3top)]
-            if score>self.cut_BDT_rTT_score:
+            if score>self.cut_BDT_rTT_score and j1top >= 0 and j2top >= 0 and j3top >= 0:
+                j1 = thejets[int(j1top)]
+                j2 = thejets[int(j2top)]
+                j3 = thejets[int(j3top)]
                 bscores = [j1.btagDeepB, j2.btagDeepB, j3.btagDeepB]
                 bindex = bscores.index(max(bscores))
                 htt_PtTop = (j1.p4()+j2.p4()+j3.p4()).Pt()
@@ -221,10 +224,14 @@ class HiggsDiffCompTTH(Module):
             if len(QFromWFromH)==2:
                 q1, q2 = QFromWFromH
 
-                for x in thejets: # I need these rather than the jetsNoB because I want to allow matching to match the QfromH to b-jets. I need this and not jets[] because I want to access the flavour.
+                # I need these rather than the jetsNoB because I want to allow matching to match the QfromH to b-jets. 
+                # I need this and not jets[] because I want to access the flavour.
+                for _x,x in enumerate(thejets):
+#                    if x.btagDeepB > 0.3093: continue # Optionally kill > Medium B-Jets
                     j=x.p4()
                     j.SetPtEtaPhiM(getattr(x,'pt%s'%jesLabel), j.Eta(), j.Phi(), j.M()) # Correct the pt
-                    jflav = getattr(x,'hadronFlavour')
+#                    jflav = getattr(x,'hadronFlavour')
+                    jflav = getattr(thejetsmoreskimmed[_x],'partonFlavour')
                     drq1=q1.DeltaR(j)
                     drq2=q2.DeltaR(j)
                     if drq1 < dr_closestTo_q1:
@@ -234,6 +241,10 @@ class HiggsDiffCompTTH(Module):
                         dr_closestTo_q1=drq1
                         flav_closestTo_q1=jflav
                         jm1=j
+                    elif drq1 < dr_nClosestTo_q1:
+                        dr_nClosestTo_q1=drq1
+                        flav_nClosestTo_q1=jflav
+                        jnm1=j
                     if drq2 < dr_closestTo_q2:
                         dr_nClosestTo_q2=dr_closestTo_q2
                         flav_nClosestTo_q2=flav_closestTo_q2
@@ -241,6 +252,10 @@ class HiggsDiffCompTTH(Module):
                         dr_closestTo_q2=drq2
                         flav_closestTo_q2=jflav
                         jm2=j
+                    elif drq2 < dr_nClosestTo_q2:
+                        dr_nClosestTo_q2=drq2
+                        flav_nClosestTo_q2=jflav
+                        jnm2=j
 
                 # Disentangle cases where the same jet matches both jets
                 # choice: pick the closest next-to-closest as the second jet
@@ -292,7 +307,8 @@ class HiggsDiffCompTTH(Module):
             # First I want to write down a few quantities
             visHiggs_matched, visHiggsPlusNu_matched = self.makeVisibleHiggs(leptonFromHiggs, jm1, jm2, NuFromWFromH[0] if len(NuFromWFromH)==1 else None)
             both_selected_jets_matched = 1 if (jm1 and jm2 and len(jetsFromHiggs)==2 and \
-            ((jm1.Pt()==jetsFromHiggs[0].Pt() and jm2.Pt()==jetsFromHiggs[1].Pt()) or (jm2.Pt()==jetsFromHiggs[0].Pt() and jm1.Pt()==jetsFromHiggs[1].Pt()))) else 0
+            ((abs(jm1.Pt()-jetsFromHiggs[0].Pt())<1e-10 and abs(jm2.Pt()-jetsFromHiggs[1].Pt())<1e-10) or \
+            (abs(jm2.Pt()-jetsFromHiggs[0].Pt())<1e-10 and abs(jm1.Pt()-jetsFromHiggs[1].Pt())<1e-10))) else 0
             self.out.fillBranch('%sboth_selected_jets_matched%s'%(self.label,jesLabel) , both_selected_jets_matched)
             self.out.fillBranch('%sinv_mass_jm1jm2%s'%(self.label,jesLabel)                      , (jm1+jm2).M()               if (jm1 and jm2)             else -99.)
             self.out.fillBranch('%sinv_mass_H_jets_match%s'%(self.label,jesLabel)                , visHiggs_matched.M()        if visHiggs_matched          else -99.)
@@ -316,7 +332,9 @@ class HiggsDiffCompTTH(Module):
             dr_l_closestWrong=9999.
             j_closestWrong=None
             if leptonFromHiggs:
-                for x in thejets: # I need these rather than the jetsNoB because I want to allow matching to match the QfromH to b-jets. I need this and not jets[] because I want to access the flavour.
+                # I need these rather than the jetsNoB because I want to allow matching to match the QfromH to b-jets.
+                # I need this and not jets[] because I want to access the flavour.
+                for x in thejets:
                     j=x.p4()
                     j.SetPtEtaPhiM(getattr(x,'pt%s'%jesLabel), j.Eta(), j.Phi(), j.M()) # Correct the pt. Not really needed, but added just in case pt is accessed in later edits
                     if j==jm1 or j==jm2:

@@ -555,8 +555,10 @@ class HiggsDiffGenTTH(Module):
         q1pdgid = -99
         q2pdgid = -99
         if len(QFromWFromH)==2:
-           q1pdgid = QFromWFromH[0].pdgId if QFromWFromH[0].pdgId == 4 or QFromWFromH[0].pdgId == 5 else 0
-           q2pdgid = QFromWFromH[1].pdgId if QFromWFromH[1].pdgId == 4 or QFromWFromH[1].pdgId == 5 else 0
+#           q1pdgid = QFromWFromH[0].pdgId if QFromWFromH[0].pdgId == 4 or QFromWFromH[0].pdgId == 5 else 0
+#           q2pdgid = QFromWFromH[1].pdgId if QFromWFromH[1].pdgId == 4 or QFromWFromH[1].pdgId == 5 else 0
+            q1pdgid = QFromWFromH[0].pdgId
+            q2pdgid = QFromWFromH[1].pdgId
         self.out.fillBranch('%squark1Flavour'%self.label, q1pdgid)
         self.out.fillBranch('%squark2Flavour'%self.label, q2pdgid)
 

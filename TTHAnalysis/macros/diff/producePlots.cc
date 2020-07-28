@@ -1,37 +1,24 @@
 {
-// *** Constants ***
+  // *** Constants ***
   const int nBins = 100;
   const double Offset = 1.2;
   const TString TVet = "NoTop";
   const TString BVet = "MediumBottom";
   const TString fileName = "2lss_diff/TTHnobb_fxfx_Friend_"+TVet+BVet+"Veto.root";
 
-// *** Files ***
-//  TFile f(fileName);
-//  TFile f("2lss_diff/original/TTHnobb_fxfx_Friend_NoTopMediumBottomVeto.root");
-  TFile f("2lss_diff/TTHnobb_fxfx_Reco_Friend.root");
-  TFile fgen("2lss_diff/TTHnobb_fxfx_Gen_Friend.root");
-  TFile fcomp("2lss_diff/TTHnobb_fxfx_Comp_Friend.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_NoTopNoBottomVeto.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_NoTopMediumBottomVeto.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_NoTopLooseBottomVeto.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_TopNoBottomVeto.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_TopMediumBottomVeto.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_TopLooseBottomVeto.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_NoTopNoBottomVeto_NoPTRes.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_NoTopMediumBottomVeto_NoPTRes.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_NoTopLooseBottomVeto_NoPTRes.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_TopNoBottomVeto_NoPTRes.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_TopMediumBottomVeto_NoPTRes.root");
-//  TFile f("2lss_diff/TTHnobb_fxfx_Friend_TopLooseBottomVeto_NoPTRes.root");
-  TTree *ft =     (TTree*) f.Get("Friends");
-  TTree *ftgen =  (TTree*) fgen.Get("Friends");
+  // *** Files ***
+  //  TFile f(fileName);
+  TFile fgen ("2lss_diff/Gen/TTHnobb_fxfx_Friend.root");
+  TFile freco("2lss_diff/Reco_NoMassConstraint/TTHnobb_fxfx_Friend.root");
+  TFile fcomp("2lss_diff/Comp/TTHnobb_fxfx_Friend.root");
+  TTree *ft     = (TTree*) fgen.Get("Friends");
+  TTree *ftreco = (TTree*) freco.Get("Friends");
   TTree *ftcomp = (TTree*) fcomp.Get("Friends");
-  ft->AddFriend(ftgen);
+  ft->AddFriend(ftreco);
   ft->AddFriend(ftcomp);
 
-// *** Get gen information
-// *** Declare variables ***
+  // *** Calculate decay paths of Higgs ***
+  // *** Declare variables ***
   int Hreco_nHiggses;
   int Hreco_nTfromhardprocess;
   int Hreco_nHadT;
@@ -150,6 +137,7 @@
     nLT[Hreco_nLepT]++;
   }
 
+  // *** Print decay paths of Higgs ***
   cout << "nHWW:       " << nHWW << endl;
   cout << "nHWWqqqq:   " << nHWWqqqq << endl;
   cout << "nHWWlvlv:   " << nHWWlvlv << endl;
@@ -170,7 +158,7 @@
   cout << "nHT:        {" << nHT[0] << "," << nHT[1] << "," << nHT[2] << "," << nHT[3] << "}" << endl;
   cout << "nLT:        {" << nLT[0] << "," << nLT[1] << "," << nLT[2] << "," << nLT[3] << "}" << endl;
 
-// *** Declare variables ***
+  // *** Declare more variables ***
   // reconstruction loop dependent vars
   float Hreco_minDRlj;
   float Hreco_DRj1j2;
@@ -334,6 +322,7 @@
   TH1D *hst_nJetsAfterCuts = new TH1D("hst_nJetsAfterCuts","hst_nJetsAfterCuts",20,-0.5,19.5);
   
   TH1D *hst_NSelectedMatchesVsNJet = new TH1D("hst_NSelectedMatchesVsNJet","hst_NSelectedMatchesVsNJet",20,-0.5,19.5);
+  TH1D *hst_NMatchesVsNJet = new TH1D("hst_NMatchesVsNJet","hst_NMatchesVsNJet",20,-0.5,19.5);
   TH1D *hst_NSelectedMatchesVsNJetFrac = new TH1D("hst_NSelectedMatchesVsNJetFrac","hst_NSelectedMatchesVsNJetFrac",20,-0.5,19.5);
 
   TH2D *hst_flavourMatchEffQ1 = new TH2D("hst_flavourMatchEffQ1","hst_flavourMatchEffQ1",80,0.0125,2.0125,80,0.0125,2.0125); // FIXME
@@ -384,7 +373,8 @@
   {
     ft->GetEntry(i);
     // Calculate Counts
-//    if (Hreco_nQFromWFromH != 2 || Hreco_nLFromWFromH != 1) continue;
+    if (Hreco_nQFromWFromH != 2 || Hreco_nLFromWFromH != 1) continue;
+    if (Hreco_nQFromWFromH != 2) continue;
     bool Q1Match = Hreco_closestJet_delR_ToQ1FromWFromH != -99 && Hreco_closestJet_delR_ToQ1FromWFromH < 0.3 && abs(Hreco_closestJet_ptres_ToQ1FromWFromH) < 0.6;
     bool Q2Match = Hreco_closestJet_delR_ToQ2FromWFromH != -99 && Hreco_closestJet_delR_ToQ2FromWFromH < 0.3 && abs(Hreco_closestJet_ptres_ToQ2FromWFromH) < 0.6;
     bool uniqueJetMatch = Q1Match && Q2Match && Hreco_closestJet_pt_ToQ1FromWFromH != Hreco_closestJet_pt_ToQ2FromWFromH;
@@ -405,9 +395,10 @@
     if (Hreco_quark2Eta != -99) hst_Q2VsEta->Fill(Hreco_quark2Eta);
     if (Hreco_quark2Eta != -99 && Q2Match) hst_Q2MatchVsEta->Fill(Hreco_quark2Eta);
 
-    if (Hreco_both_selected_jets_matched) {
-      hst_NSelectedMatchesVsNJet->Fill(Hreco_nJetsAfterCuts);
-    }
+    // Plot matching efficiency vs NJet in event
+    if (Hreco_both_selected_jets_matched) hst_NSelectedMatchesVsNJet->Fill(Hreco_nJetsAfterCuts);
+    if (Q1Match && Q2Match) hst_NMatchesVsNJet->Fill(Hreco_nJetsAfterCuts);
+
     // Calculate flavour matching plot
     for (int i=0; i<nFMBins; i++) {
       for (int j=0; j<nFMBins; j++) {
@@ -425,7 +416,7 @@
         }
       }
     }
-
+      
     // Fill mHRight and mHWrong
     if (Hreco_mHrightlep != -99) hst_mHrightlep->Fill(Hreco_mHrightlep);
     if (Hreco_mHwronglep != -99) hst_mHwronglep->Fill(Hreco_mHwronglep);
@@ -485,7 +476,7 @@
 
   }
 
-  // Compute correlations
+  // Compute correlations (perhaps this should be moved into a function)
   // xx: pTHVisReco
   // yy: pTHVisGen
   // zz: pTHFullGen
@@ -518,6 +509,7 @@
     yyyy += Hreco_pTTrueGen*Hreco_pTTrueGen;
   }
   double recogencorr = (NN*xxyy - xx*yy)/sqrt((NN*xxxx-xx*xx)*(NN*yyyy-yy*yy));
+
   NN = 0;
   yy = 0;
   zz = 0;
@@ -537,6 +529,7 @@
     zzzz += Hreco_pTHgen*Hreco_pTHgen;
   }
   double visfullcorr = (NN*yyzz - yy*zz)/sqrt((NN*yyyy-yy*yy)*(NN*zzzz-zz*zz));
+
   NN = 0;
   xx = 0;
   zz = 0;
@@ -556,6 +549,7 @@
     zzzz += Hreco_pTHgen*Hreco_pTHgen;
   }
   double totalcorr   = (NN*xxzz - xx*zz)/sqrt((NN*xxxx-xx*xx)*(NN*zzzz-zz*zz));
+
   NN = 0;
   xx = 0;
   zz = 0;
@@ -607,8 +601,8 @@
   // Populate NSelectedMatchesVsNJetFrac histogram
   for (int i=1; i<= hst_NSelectedMatchesVsNJetFrac->GetNbinsX(); i++) {
     float Num = hst_NSelectedMatchesVsNJet->GetBinContent(i);
-    float Den = hst_nJetsAfterCuts->GetBinContent(i);
-    float sf = 1; //(i-1)*(i-2)/2.0;
+    float Den = hst_NMatchesVsNJet->GetBinContent(i);
+    float sf = 1; //(i-1)*(i-2)/2.0 for histogram scaled by NJet choose 2
     if (Den == 0) {
       hst_NSelectedMatchesVsNJetFrac->SetBinContent(i,0);
     } else {
@@ -680,12 +674,12 @@
   cout << "totalcorr:       " << totalcorr << endl;
   cout << "totalcorrnocuts: " << totalcorrnocuts << endl;
   cout << "TopPtCorr:       " << TopPtCorr << endl;
-  cout << "\n\n";
+  cout << endl << endl;
 
   gSystem->Exec("mkdir 1DDistPlots");
   TString VetoString = TVet+BVet+"Veto";
 
-  TCanvas *can2 = new TCanvas();
+  TCanvas *can1 = new TCanvas();
   hst_pTHvis->SetLineColor(kBlue);
   hst_pTHgen->SetLineColor(kRed);
   hst_pTVisPlusNu->SetLineColor(kGreen);
@@ -706,22 +700,22 @@
   hst_pTTrueGen->Draw("HIST SAME");
   hst_pTTrueGenPlusNu->Draw("HIST SAME");
 //  hst_pTVis_jets_match->Draw("HIST SAME");
-  TLatex tex2(.4,.85,VetoString);
-  tex2.SetTextSize(0.03);
-  tex2.SetNDC(kTRUE);
-  tex2.Draw();
+  TLatex tex1(.4,.85,VetoString);
+  tex1.SetTextSize(0.03);
+  tex1.SetNDC(kTRUE);
+  tex1.Draw();
 
-  TLegend *leg2 = new TLegend(0.65,0.65,0.85,0.85);
-  leg2->AddEntry(hst_pTHvis,"Reco");
-  leg2->AddEntry(hst_pTHgen,"Gen");
-  leg2->AddEntry(hst_pTVisPlusNu,"RecoPlusNu");
-  leg2->AddEntry(hst_pTTrueGen,"Gen(q1) + Gen(q2) + Gen(l)");
-  leg2->AddEntry(hst_pTTrueGenPlusNu,"Gen(q1) + Gen(q2) + Gen(l) + Gen(nu)");
+  TLegend *leg1 = new TLegend(0.65,0.65,0.85,0.85);
+  leg1->AddEntry(hst_pTHvis,"Reco");
+  leg1->AddEntry(hst_pTHgen,"Gen");
+  leg1->AddEntry(hst_pTVisPlusNu,"RecoPlusNu");
+  leg1->AddEntry(hst_pTTrueGen,"Gen(q1) + Gen(q2) + Gen(l)");
+  leg1->AddEntry(hst_pTTrueGenPlusNu,"Gen(q1) + Gen(q2) + Gen(l) + Gen(nu)");
 //  leg2->AddEntry(hst_pTVis_jets_match,"Reco with Matched Jets");
-  leg2->Draw();
-  can2->SaveAs("1DDistPlots/plot_PTDists.png");
+  leg1->Draw();
+  can1->SaveAs("1DDistPlots/plot_PTDists.png");
 
-  TCanvas *can3 = new TCanvas();
+  TCanvas *can2 = new TCanvas();
   hst_Wmass->GetXaxis()->SetTitle("W pT");
   hst_Wmass->GetYaxis()->SetTitle("a.u.");
   hst_Wmass->GetXaxis()->CenterTitle();
@@ -730,87 +724,75 @@
   hst_Wmass->GetYaxis()->SetTitleOffset(Offset);
   hst_Wmass->SetTitle("Mass Selected Jet Pair");
   hst_Wmass->Draw();
-  TLatex tex3(.4,.85,VetoString);
-  tex3.SetTextSize(0.03);
-  tex3.SetNDC(kTRUE);
-  tex3.Draw();
-  can3->SaveAs("1DDistPlots/plot_WMass.png");
+  TLatex tex2(.4,.85,VetoString);
+  tex2.SetTextSize(0.03);
+  tex2.SetNDC(kTRUE);
+  tex2.Draw();
+  can2->SaveAs("1DDistPlots/plot_WMass.png");
 
-  TCanvas *can4 = new TCanvas();
+  TCanvas *can3 = new TCanvas();
   hst_closestJet_delR_ToQ1FromWFromH->GetXaxis()->SetTitle("Minimum #DeltaR");
   hst_closestJet_delR_ToQ1FromWFromH->GetYaxis()->SetTitle("N Events");
   hst_closestJet_delR_ToQ1FromWFromH->SetTitle("Quark 1 #DeltaR");
   hst_closestJet_delR_ToQ1FromWFromH->SetLineColor(kRed);
-//  hst_closestJetInPTRes_delR_ToQ1FromWFromH->SetLineColor(kBlue);
   hst_closestJet_delR_ToQ1FromWFromH->Draw();
-//  hst_closestJetInPTRes_delR_ToQ1FromWFromH->Draw("SAME");
+  TLatex tex3(.4,.85,VetoString);
+  tex3.SetTextSize(0.03);
+  tex3.SetNDC(kTRUE);
+  tex3.Draw();
+
+  TLegend *leg3 = new TLegend(0.65,0.65,0.85,0.85);
+  leg3->AddEntry(hst_closestJet_delR_ToQ1FromWFromH,"Min #DeltaR");
+  leg3->Draw();
+  can3->SaveAs("1DDistPlots/plot_Q1dR.png");
+
+  TCanvas *can4 = new TCanvas();
+  hst_closestJet_ptres_ToQ1FromWFromH->GetXaxis()->SetTitle("Minimum pT_res");
+  hst_closestJet_ptres_ToQ1FromWFromH->GetYaxis()->SetTitle("N Events");
+  hst_closestJet_ptres_ToQ1FromWFromH->SetTitle("Quark 1 pT_res");
+  hst_closestJet_ptres_ToQ1FromWFromH->SetLineColor(kRed);
+  hst_closestJet_ptres_ToQ1FromWFromH->Draw();
   TLatex tex4(.4,.85,VetoString);
   tex4.SetTextSize(0.03);
   tex4.SetNDC(kTRUE);
   tex4.Draw();
 
   TLegend *leg4 = new TLegend(0.65,0.65,0.85,0.85);
-//  leg4->AddEntry(hst_closestJetInPTRes_delR_ToQ1FromWFromH,"Min pT_res");
-  leg4->AddEntry(hst_closestJet_delR_ToQ1FromWFromH,"Min #DeltaR");
+  leg4->AddEntry(hst_closestJet_ptres_ToQ1FromWFromH,"Min #DeltaR");
   leg4->Draw();
-  can4->SaveAs("1DDistPlots/plot_Q1dR.png");
+  can4->SaveAs("1DDistPlots/plot_Q1DPtOPt.png");
 
   TCanvas *can5 = new TCanvas();
-  hst_closestJet_ptres_ToQ1FromWFromH->GetXaxis()->SetTitle("Minimum pT_res");
-  hst_closestJet_ptres_ToQ1FromWFromH->GetYaxis()->SetTitle("N Events");
-  hst_closestJet_ptres_ToQ1FromWFromH->SetTitle("Quark 1 pT_res");
-  hst_closestJet_ptres_ToQ1FromWFromH->SetLineColor(kRed);
-//  hst_closestJetInPTRes_ptres_ToQ1FromWFromH->SetLineColor(kBlue);
-  hst_closestJet_ptres_ToQ1FromWFromH->Draw();
-//  hst_closestJetInPTRes_ptres_ToQ1FromWFromH->Draw("SAME");
+  hst_closestJet_delR_ToQ2FromWFromH->GetXaxis()->SetTitle("Minimum #DeltaR");
+  hst_closestJet_delR_ToQ2FromWFromH->GetYaxis()->SetTitle("N Events");
+  hst_closestJet_delR_ToQ2FromWFromH->SetTitle("Quark 2 #DeltaR");
+  hst_closestJet_delR_ToQ2FromWFromH->SetLineColor(kRed);
+  hst_closestJet_delR_ToQ2FromWFromH->Draw();
   TLatex tex5(.4,.85,VetoString);
   tex5.SetTextSize(0.03);
   tex5.SetNDC(kTRUE);
   tex5.Draw();
 
   TLegend *leg5 = new TLegend(0.65,0.65,0.85,0.85);
-//  leg5->AddEntry(hst_closestJetInPTRes_ptres_ToQ1FromWFromH,"Min pT_res");
-  leg5->AddEntry(hst_closestJet_ptres_ToQ1FromWFromH,"Min #DeltaR");
+  leg5->AddEntry(hst_closestJet_delR_ToQ2FromWFromH,"Min #DeltaR");
   leg5->Draw();
-  can5->SaveAs("1DDistPlots/plot_Q1DPtOPt.png");
+  can5->SaveAs("1DDistPlots/plot_Q2dR.png");
 
-  TCanvas *can4_4 = new TCanvas();
-  hst_closestJet_delR_ToQ2FromWFromH->GetXaxis()->SetTitle("Minimum #DeltaR");
-  hst_closestJet_delR_ToQ2FromWFromH->GetYaxis()->SetTitle("N Events");
-  hst_closestJet_delR_ToQ2FromWFromH->SetTitle("Quark 2 #DeltaR");
-  hst_closestJet_delR_ToQ2FromWFromH->SetLineColor(kRed);
-//  hst_closestJetInPTRes_delR_ToQ2FromWFromH->SetLineColor(kBlue);
-  hst_closestJet_delR_ToQ2FromWFromH->Draw();
-//  hst_closestJetInPTRes_delR_ToQ2FromWFromH->Draw("SAME");
-  TLatex tex4_4(.4,.85,VetoString);
-  tex4_4.SetTextSize(0.03);
-  tex4_4.SetNDC(kTRUE);
-  tex4_4.Draw();
-
-  TLegend *leg4_4 = new TLegend(0.65,0.65,0.85,0.85);
-//  leg4_4->AddEntry(hst_closestJetInPTRes_delR_ToQ2FromWFromH,"Min pT_res");
-  leg4_4->AddEntry(hst_closestJet_delR_ToQ2FromWFromH,"Min #DeltaR");
-  leg4_4->Draw();
-  can4_4->SaveAs("1DDistPlots/plot_Q2dR.png");
-
-  TCanvas *can5_5 = new TCanvas();
+  TCanvas *can6 = new TCanvas();
   hst_closestJet_ptres_ToQ2FromWFromH->GetXaxis()->SetTitle("Minimum pT_res");
   hst_closestJet_ptres_ToQ2FromWFromH->GetYaxis()->SetTitle("N Events");
   hst_closestJet_ptres_ToQ2FromWFromH->SetTitle("Quark 2 pT_res");
   hst_closestJet_ptres_ToQ2FromWFromH->SetLineColor(kRed);
-//  hst_closestJetInPTRes_ptres_ToQ2FromWFromH->SetLineColor(kBlue);
   hst_closestJet_ptres_ToQ2FromWFromH->Draw();
-//  hst_closestJetInPTRes_ptres_ToQ2FromWFromH->Draw("SAME");
-  TLatex tex5_5(.4,.85,VetoString);
-  tex5_5.SetTextSize(0.03);
-  tex5_5.SetNDC(kTRUE);
-  tex5_5.Draw();
+  TLatex tex6(.4,.85,VetoString);
+  tex6.SetTextSize(0.03);
+  tex6.SetNDC(kTRUE);
+  tex6.Draw();
 
-  TLegend *leg5_5 = new TLegend(0.65,0.65,0.85,0.85);
-//  leg5_5->AddEntry(hst_closestJetInPTRes_ptres_ToQ2FromWFromH,"Min pT_res");
-  leg5_5->AddEntry(hst_closestJet_ptres_ToQ2FromWFromH,"Min #DeltaR");
-  leg5_5->Draw();
-  can5_5->SaveAs("1DDistPlots/plot_Q2DPtOPt.png");
+  TLegend *leg6 = new TLegend(0.65,0.65,0.85,0.85);
+  leg6->AddEntry(hst_closestJet_ptres_ToQ2FromWFromH,"Min #DeltaR");
+  leg6->Draw();
+  can6->SaveAs("1DDistPlots/plot_Q2DPtOPt.png");
 
   TCanvas *can7 = new TCanvas();
   hst_nJetsAfterCuts->GetXaxis()->SetTitle("N Jets");
@@ -823,78 +805,78 @@
   tex7.Draw();
   can7->SaveAs("1DDistPlots/plot_nJetsNoTopNoB.png");
 
-  TCanvas *can10 = new TCanvas();
+  TCanvas *can8 = new TCanvas();
   hst_NSelectedMatchesVsNJet->GetXaxis()->SetTitle("N Jets");
   hst_NSelectedMatchesVsNJet->GetYaxis()->SetTitle("N Events");
   hst_NSelectedMatchesVsNJet->SetTitle("N Events where algo chooses closest matched jets");
   hst_NSelectedMatchesVsNJet->Draw();
-  TLatex tex10(.4,.85,VetoString);
-  tex10.SetTextSize(0.03);
-  tex10.SetNDC(kTRUE);
-  tex10.Draw();
-  can10->SaveAs("1DDistPlots/plot_NSelectedMatchesVsNJet.png");
+  TLatex tex8(.4,.85,VetoString);
+  tex8.SetTextSize(0.03);
+  tex8.SetNDC(kTRUE);
+  tex8.Draw();
+  can8->SaveAs("1DDistPlots/plot_NSelectedMatchesVsNJet.png");
 
-  TCanvas *can14 = new TCanvas();
+  TCanvas *can9 = new TCanvas();
   hst_flavourMatchEffQ1->SetStats(0);
   hst_flavourMatchEffQ1->GetXaxis()->SetTitle("delR Match Criteria");
   hst_flavourMatchEffQ1->GetYaxis()->SetTitle("ptres Match Criteria");
   hst_flavourMatchEffQ1->GetZaxis()->SetRangeUser(0.5,1);
   hst_flavourMatchEffQ1->SetTitle("Fraction of Events where jet matched to leading Q also matches parton flavour");
   hst_flavourMatchEffQ1->Draw("colz");
-  TLatex tex14(.4,.85,VetoString);
-  tex14.SetTextSize(0.03);
-  tex14.SetNDC(kTRUE);
-  tex14.Draw();
-  can14->SaveAs("1DDistPlots/plot_MatchEfficiency_Q1.png");
+  TLatex tex9(.4,.85,VetoString);
+  tex9.SetTextSize(0.03);
+  tex9.SetNDC(kTRUE);
+  tex9.Draw();
+  can9->SaveAs("1DDistPlots/plot_MatchEfficiency_Q1.png");
 
-  TCanvas *can15 = new TCanvas();
+  TCanvas *can10 = new TCanvas();
   hst_flavourMatchEffQ2->SetStats(0);
   hst_flavourMatchEffQ2->GetXaxis()->SetTitle("delR Match Criteria");
   hst_flavourMatchEffQ2->GetYaxis()->SetTitle("ptres Match Criteria");
   hst_flavourMatchEffQ2->GetZaxis()->SetRangeUser(0.5,1);
   hst_flavourMatchEffQ2->SetTitle("Fraction of Events where jet matched to sub-leading Q also matches parton flavour");
   hst_flavourMatchEffQ2->Draw("colz");
-  TLatex tex15(.4,.85,VetoString);
-  tex15.SetTextSize(0.03);
-  tex15.SetNDC(kTRUE);
-  tex15.Draw();
-  can15->SaveAs("1DDistPlots/plot_MatchEfficiency_Q2.png");
+  TLatex tex10(.4,.85,VetoString);
+  tex10.SetTextSize(0.03);
+  tex10.SetNDC(kTRUE);
+  tex10.Draw();
+  can10->SaveAs("1DDistPlots/plot_MatchEfficiency_Q2.png");
 
-  TCanvas *can16 = new TCanvas();
+  TCanvas *can11 = new TCanvas();
   hst_MTrueGen->GetXaxis()->SetTitle("M Visible");
   hst_MTrueGen->GetYaxis()->SetTitle("N Events");
   hst_MTrueGen->SetTitle("M Visible");
   hst_MTrueGen->Draw();
-  TLatex tex16(.4,.85,VetoString);
-  tex16.SetTextSize(0.03);
-  tex16.SetNDC(kTRUE);
-  tex16.Draw();
-  can16->SaveAs("1DDistPlots/plot_GenM.png");
+  TLatex tex11(.4,.85,VetoString);
+  tex11.SetTextSize(0.03);
+  tex11.SetNDC(kTRUE);
+  tex11.Draw();
+  can11->SaveAs("1DDistPlots/plot_GenM.png");
 
-  TCanvas *can17 = new TCanvas();
+  TCanvas *can12 = new TCanvas();
   hst_inv_mass_q1_q2->GetXaxis()->SetTitle("M Generator Quarks from W from H");
   hst_inv_mass_q1_q2->GetYaxis()->SetTitle("N Events");
   hst_inv_mass_q1_q2->SetTitle("M Quarks");
   hst_inv_mass_q1_q2->Draw();
-  TLatex tex17(.4,.85,VetoString);
-  tex17.SetTextSize(0.03);
-  tex17.SetNDC(kTRUE);
-  tex17.Draw();
-  can17->SaveAs("1DDistPlots/plot_GenMQuark.png");
+  TLatex tex12(.4,.85,VetoString);
+  tex12.SetTextSize(0.03);
+  tex12.SetNDC(kTRUE);
+  tex12.Draw();
+  can12->SaveAs("1DDistPlots/plot_GenMQuark.png");
 
-  TCanvas *can18 = new TCanvas();
+  TCanvas *can13 = new TCanvas();
   hst_inv_mass_jm1jm2->SetLineColor(kBlue);
   hst_inv_mass_jm1jm2->GetXaxis()->SetTitle("M Matched Jets");
   hst_inv_mass_jm1jm2->GetYaxis()->SetTitle("N Events");
   hst_inv_mass_jm1jm2->SetTitle("M Matched Jets");
   hst_inv_mass_jm1jm2->Draw();
-  TLatex tex18(.4,.85,VetoString);
-  tex18.SetTextSize(0.03);
-  tex18.SetNDC(kTRUE);
-  tex18.Draw();
-  can18->SaveAs("1DDistPlots/plot_MatchedJetsM.png");
+  TLatex tex13(.4,.85,VetoString);
+  tex13.SetTextSize(0.03);
+  tex13.SetNDC(kTRUE);
+  tex13.Draw();
+  can13->SaveAs("1DDistPlots/plot_MatchedJetsM.png");
 
-  TCanvas *can20 = new TCanvas();
+  TCanvas *can14 = new TCanvas();
   hst_Q1VsPt->SetLineColor(kBlue);
   hst_Q1MatchVsPt->SetLineColor(kRed);
   hst_Q1VsPt->GetXaxis()->SetTitle("Quark Pt");
@@ -903,13 +885,13 @@
   hst_Q1VsPt->Draw();
   hst_Q1MatchVsPt->Draw("SAME");
 
-  TLegend *leg20 = new TLegend(0.65,0.65,0.85,0.85);
-  leg20->AddEntry(hst_Q1VsPt,"All Gen Quarks");
-  leg20->AddEntry(hst_Q1MatchVsPt,"Matched Gen Quarks");
-  leg20->Draw();
-  can20->SaveAs("1DDistPlots/plot_Q1MatchesVsPt.png");
+  TLegend *leg14 = new TLegend(0.65,0.65,0.85,0.85);
+  leg14->AddEntry(hst_Q1VsPt,"All Gen Quarks");
+  leg14->AddEntry(hst_Q1MatchVsPt,"Matched Gen Quarks");
+  leg14->Draw();
+  can14->SaveAs("1DDistPlots/plot_Q1MatchesVsPt.png");
 
-  TCanvas *can21 = new TCanvas();
+  TCanvas *can15 = new TCanvas();
   hst_Q2VsPt->SetLineColor(kBlue);
   hst_Q2MatchVsPt->SetLineColor(kRed);
   hst_Q2VsPt->GetXaxis()->SetTitle("Quark Pt");
@@ -918,13 +900,13 @@
   hst_Q2VsPt->Draw();
   hst_Q2MatchVsPt->Draw("SAME");
 
-  TLegend *leg21 = new TLegend(0.65,0.65,0.85,0.85);
-  leg21->AddEntry(hst_Q2VsPt,"All Gen Quarks");
-  leg21->AddEntry(hst_Q2MatchVsPt,"Matched Gen Quarks");
-  leg21->Draw();
-  can21->SaveAs("1DDistPlots/plot_Q2MatchesVsPt.png");
+  TLegend *leg15 = new TLegend(0.65,0.65,0.85,0.85);
+  leg15->AddEntry(hst_Q2VsPt,"All Gen Quarks");
+  leg15->AddEntry(hst_Q2MatchVsPt,"Matched Gen Quarks");
+  leg15->Draw();
+  can15->SaveAs("1DDistPlots/plot_Q2MatchesVsPt.png");
 
-  TCanvas *can22 = new TCanvas();
+  TCanvas *can16 = new TCanvas();
   hst_Q1EffVsPt->SetLineColor(kBlue);
   hst_Q2EffVsPt->SetLineColor(kRed);
   hst_Q1EffVsPt->GetXaxis()->SetTitle("Quark Pt");
@@ -934,13 +916,13 @@
   hst_Q1EffVsPt->Draw();
   hst_Q2EffVsPt->Draw("SAME");
 
-  TLegend *leg22 = new TLegend(0.65,0.65,0.85,0.85);
-  leg22->AddEntry(hst_Q1EffVsPt,"Leading Quark");
-  leg22->AddEntry(hst_Q2EffVsPt,"Sub-leading Quark");
-  leg22->Draw();
-  can22->SaveAs("1DDistPlots/plot_QMatchEffVsPt.png");
+  TLegend *leg16 = new TLegend(0.65,0.65,0.85,0.85);
+  leg16->AddEntry(hst_Q1EffVsPt,"Leading Quark");
+  leg16->AddEntry(hst_Q2EffVsPt,"Sub-leading Quark");
+  leg16->Draw();
+  can16->SaveAs("1DDistPlots/plot_QMatchEffVsPt.png");
 
-  TCanvas *can23 = new TCanvas();
+  TCanvas *can17 = new TCanvas();
   hst_Q1VsEta->SetLineColor(kBlue);
   hst_Q1MatchVsEta->SetLineColor(kRed);
   hst_Q1VsEta->GetXaxis()->SetTitle("Quark Eta");
@@ -949,13 +931,13 @@
   hst_Q1VsEta->Draw();
   hst_Q1MatchVsEta->Draw("SAME");
 
-  TLegend *leg23 = new TLegend(0.65,0.65,0.85,0.85);
-  leg23->AddEntry(hst_Q1VsEta,"All Gen Quarks");
-  leg23->AddEntry(hst_Q1MatchVsEta,"Matched Gen Quarks");
-  leg23->Draw();
-  can23->SaveAs("1DDistPlots/plot_Q1MatchesVsEta.png");
+  TLegend *leg17 = new TLegend(0.65,0.65,0.85,0.85);
+  leg17->AddEntry(hst_Q1VsEta,"All Gen Quarks");
+  leg17->AddEntry(hst_Q1MatchVsEta,"Matched Gen Quarks");
+  leg17->Draw();
+  can17->SaveAs("1DDistPlots/plot_Q1MatchesVsEta.png");
 
-  TCanvas *can24 = new TCanvas();
+  TCanvas *can18 = new TCanvas();
   hst_Q2VsEta->SetLineColor(kBlue);
   hst_Q2MatchVsEta->SetLineColor(kRed);
   hst_Q2VsEta->GetXaxis()->SetTitle("Quark Eta");
@@ -964,13 +946,13 @@
   hst_Q2VsEta->Draw();
   hst_Q2MatchVsEta->Draw("SAME");
 
-  TLegend *leg24 = new TLegend(0.65,0.65,0.85,0.85);
-  leg24->AddEntry(hst_Q2VsEta,"All Gen Quarks");
-  leg24->AddEntry(hst_Q2MatchVsEta,"Matched Gen Quarks");
-  leg24->Draw();
-  can24->SaveAs("1DDistPlots/plot_Q2MatchesVsEta.png");
+  TLegend *leg18 = new TLegend(0.65,0.65,0.85,0.85);
+  leg18->AddEntry(hst_Q2VsEta,"All Gen Quarks");
+  leg18->AddEntry(hst_Q2MatchVsEta,"Matched Gen Quarks");
+  leg18->Draw();
+  can18->SaveAs("1DDistPlots/plot_Q2MatchesVsEta.png");
 
-  TCanvas *can25 = new TCanvas();
+  TCanvas *can19 = new TCanvas();
   hst_Q1EffVsEta->SetLineColor(kBlue);
   hst_Q2EffVsEta->SetLineColor(kRed);
   hst_Q1EffVsEta->GetXaxis()->SetTitle("Quark Eta");
@@ -980,37 +962,37 @@
   hst_Q1EffVsEta->Draw();
   hst_Q2EffVsEta->Draw("SAME");
 
-  TLegend *leg25 = new TLegend(0.65,0.65,0.85,0.85);
-  leg25->AddEntry(hst_Q1EffVsEta,"Leading Quark");
-  leg25->AddEntry(hst_Q2EffVsEta,"Sub-leading Quark");
-  leg25->Draw();
-  can25->SaveAs("1DDistPlots/plot_QMatchEffVsEta.png");
+  TLegend *leg19 = new TLegend(0.65,0.65,0.85,0.85);
+  leg19->AddEntry(hst_Q1EffVsEta,"Leading Quark");
+  leg19->AddEntry(hst_Q2EffVsEta,"Sub-leading Quark");
+  leg19->Draw();
+  can19->SaveAs("1DDistPlots/plot_QMatchEffVsEta.png");
 
-  TCanvas *can26 = new TCanvas();
+  TCanvas *can20 = new TCanvas();
   hst_closest2DPTResVsDr->SetStats(0);
   hst_closest2DPTResVsDr->GetXaxis()->SetTitle("PT Resolution");
   hst_closest2DPTResVsDr->GetYaxis()->SetTitle("Delta R");
   hst_closest2DPTResVsDr->SetTitle("Closest Jet");
   hst_closest2DPTResVsDr->Draw("colz");
-  can26->SaveAs("1DDistPlots/plot_closest2DPTResVsDr.png");
+  can20->SaveAs("1DDistPlots/plot_closest2DPTResVsDr.png");
 
-  TCanvas *can27 = new TCanvas();
+  TCanvas *can21 = new TCanvas();
   hst_mjjVsdRjj->SetStats(0);
   hst_mjjVsdRjj->GetXaxis()->SetTitle("M_{jj}");
   hst_mjjVsdRjj->GetYaxis()->SetTitle("dR_{jj}");
   hst_mjjVsdRjj->SetTitle("Matched Jets");
   hst_mjjVsdRjj->Draw("colz");
-  can27->SaveAs("1DDistPlots/plot_mjjVsdRjj.png");
+  can21->SaveAs("1DDistPlots/plot_mjjVsdRjj.png");
 
-  TCanvas *can28 = new TCanvas();
+  TCanvas *can22 = new TCanvas();
   hst_mqqVsdRqq->SetStats(0);
   hst_mqqVsdRqq->GetXaxis()->SetTitle("M_{qq}");
   hst_mqqVsdRqq->GetYaxis()->SetTitle("dR_{qq}");
   hst_mqqVsdRqq->SetTitle("Gen Quarks");
   hst_mqqVsdRqq->Draw("colz");
-  can28->SaveAs("1DDistPlots/plot_mqqVsdRqq.png");
+  can22->SaveAs("1DDistPlots/plot_mqqVsdRqq.png");
 
-  TCanvas *can46 = new TCanvas();
+  TCanvas *can23 = new TCanvas();
   hst_mHrightlep->GetXaxis()->SetTitle("M(q,q,l)");
   hst_mHrightlep->GetYaxis()->SetTitle("N Events");
   hst_mHrightlep->SetTitle("Visible M for Right & Wrong Lepton");
@@ -1018,13 +1000,13 @@
   hst_mHrightlep->Draw();
   hst_mHwronglep->Draw("SAME");
 
-  TLegend *leg46 = new TLegend(0.65,0.65,0.85,0.85);
-  leg46->AddEntry(hst_mHrightlep,"Gen Quarks + Correct Lepton");
-  leg46->AddEntry(hst_mHwronglep,"Gen Quarks + Wrong Lepton");
-  leg46->Draw();
-  can46->SaveAs("1DDistPlots/plot_mHRightWrongLepton.png");
+  TLegend *leg23 = new TLegend(0.65,0.65,0.85,0.85);
+  leg23->AddEntry(hst_mHrightlep,"Gen Quarks + Correct Lepton");
+  leg23->AddEntry(hst_mHwronglep,"Gen Quarks + Wrong Lepton");
+  leg23->Draw();
+  can23->SaveAs("1DDistPlots/plot_mHRightWrongLepton.png");
 
-  TCanvas *can47 = new TCanvas();
+  TCanvas *can24 = new TCanvas();
   hst_HadTopPt->GetXaxis()->SetTitle("Pt");
   hst_HadTopPt->GetYaxis()->SetTitle("N Events");
   hst_HadTopPt->SetTitle("Hadronic Top Pt");
@@ -1033,13 +1015,13 @@
   hst_HadTopPt->Draw();
   hst_htt_PtTop->Draw("SAME");
 
-  TLegend *leg47 = new TLegend(0.65,0.65,0.85,0.85);
-  leg47->AddEntry(hst_htt_PtTop,"Reco");
-  leg47->AddEntry(hst_HadTopPt,"Gen");
-  leg47->Draw();
-  can47->SaveAs("1DDistPlots/plot_zzHadTopPtRecoGen.png");
+  TLegend *leg24 = new TLegend(0.65,0.65,0.85,0.85);
+  leg24->AddEntry(hst_htt_PtTop,"Reco");
+  leg24->AddEntry(hst_HadTopPt,"Gen");
+  leg24->Draw();
+  can24->SaveAs("1DDistPlots/plot_zzHadTopPtRecoGen.png");
 
-  TCanvas *can48 = new TCanvas();
+  TCanvas *can25 = new TCanvas();
   hst_HadTopM->GetXaxis()->SetTitle("M");
   hst_HadTopM->GetYaxis()->SetTitle("N Events");
   hst_HadTopM->SetTitle("Hadronic Top M");
@@ -1047,20 +1029,20 @@
   hst_HadTopM->Draw();
   hst_htt_MTop->Draw("SAME");
 
-  TLegend *leg48 = new TLegend(0.65,0.65,0.85,0.85);
-  leg48->AddEntry(hst_htt_MTop,"Reco");
-  leg48->AddEntry(hst_HadTopM,"Gen");
-  leg48->Draw();
-  can48->SaveAs("1DDistPlots/plot_zzHadTopMRecoGen.png");
+  TLegend *leg25 = new TLegend(0.65,0.65,0.85,0.85);
+  leg25->AddEntry(hst_htt_MTop,"Reco");
+  leg25->AddEntry(hst_HadTopM,"Gen");
+  leg25->Draw();
+  can25->SaveAs("1DDistPlots/plot_zzHadTopMRecoGen.png");
 
-  TCanvas *can49 = new TCanvas();
+  TCanvas *can26 = new TCanvas();
   hst_recogen_PtTop->GetXaxis()->SetTitle("Reco");
   hst_recogen_PtTop->GetYaxis()->SetTitle("Gen");
   hst_recogen_PtTop->SetTitle("HTT Reconstructed vs Generator Hadronic Top Pt");
   hst_recogen_PtTop->Draw("colz");
-  can49->SaveAs("1DDistPlots/plot_zzrecogen_PtTop_2D.png");
+  can26->SaveAs("1DDistPlots/plot_zzrecogen_PtTop_2D.png");
 
-  TCanvas *can50 = new TCanvas();
+  TCanvas *can27 = new TCanvas();
   hst_htt_PtWFromTop->GetXaxis()->SetTitle("Pt");
   hst_htt_PtWFromTop->GetYaxis()->SetTitle("N Events");
   hst_htt_PtWFromTop->SetTitle("W From Hadronic Top Pt");
@@ -1071,14 +1053,14 @@
   hst_WFromHadTopPt->Draw("SAME");
   hst_HadWFromHPt->Draw("SAME");
 
-  TLegend *leg50 = new TLegend(0.65,0.65,0.85,0.85);
-  leg50->AddEntry(hst_htt_PtWFromTop,"Pt From non-B HTT Jets");
-  leg50->AddEntry(hst_WFromHadTopPt,"W From Hadronic Top");
-  leg50->AddEntry(hst_HadWFromHPt,"Hadronic W From Higgs");
-  leg50->Draw();
-  can50->SaveAs("1DDistPlots/plot_zzWFromHadTopPt.png");
+  TLegend *leg27 = new TLegend(0.65,0.65,0.85,0.85);
+  leg27->AddEntry(hst_htt_PtWFromTop,"Pt From non-B HTT Jets");
+  leg27->AddEntry(hst_WFromHadTopPt,"W From Hadronic Top");
+  leg27->AddEntry(hst_HadWFromHPt,"Hadronic W From Higgs");
+  leg27->Draw();
+  can27->SaveAs("1DDistPlots/plot_zzWFromHadTopPt.png");
 
-  TCanvas *can51 = new TCanvas();
+  TCanvas *can28 = new TCanvas();
   hst_htt_MWFromTop->GetXaxis()->SetTitle("M");
   hst_htt_MWFromTop->GetYaxis()->SetTitle("N Events");
   hst_htt_MWFromTop->SetTitle("W From Hadronic Top M");
@@ -1089,27 +1071,27 @@
   hst_WFromHadTopM->Draw("SAME");
   hst_HadWFromHM->Draw("SAME");
 
-  TLegend *leg51 = new TLegend(0.65,0.65,0.85,0.85);
-  leg51->AddEntry(hst_htt_MWFromTop,"M From non-B HTT Jets");
-  leg51->AddEntry(hst_WFromHadTopM,"W From Hadronic Top");
-  leg51->AddEntry(hst_HadWFromHM,"Hadronic W From Higgs");
-  leg51->Draw();
-  can51->SaveAs("1DDistPlots/plot_zzWFromHadTopM.png");
+  TLegend *leg28 = new TLegend(0.65,0.65,0.85,0.85);
+  leg28->AddEntry(hst_htt_MWFromTop,"M From non-B HTT Jets");
+  leg28->AddEntry(hst_WFromHadTopM,"W From Hadronic Top");
+  leg28->AddEntry(hst_HadWFromHM,"Hadronic W From Higgs");
+  leg28->Draw();
+  can28->SaveAs("1DDistPlots/plot_zzWFromHadTopM.png");
 
-  TCanvas *can52 = new TCanvas();
+  TCanvas *can29 = new TCanvas();
   hst_NSelectedMatchesVsNJetFrac->GetXaxis()->SetTitle("N Jets");
   hst_NSelectedMatchesVsNJetFrac->GetYaxis()->SetTitle("Fraction");
   hst_NSelectedMatchesVsNJetFrac->SetTitle("(H->WW->qqlnu NEvents w/ 2 quarks matched)/(H->WW->qqlnu NEvents)");
   hst_NSelectedMatchesVsNJetFrac->GetYaxis()->SetRangeUser(0,1.2);
   hst_NSelectedMatchesVsNJetFrac->SetLineColor(kRed);
   hst_NSelectedMatchesVsNJetFrac->Draw();
-  can52->SaveAs("1DDistPlots/plot_NSelectedMatchesVsNJetFrac.png");
+  can29->SaveAs("1DDistPlots/plot_NSelectedMatchesVsNJetFrac.png");
 
-  TCanvas *can53 = new TCanvas();
+  TCanvas *can30 = new TCanvas();
   hst_HadTop_2leps_delr->GetXaxis()->SetTitle("DelR(RightLepton,HadronicTop");
   hst_HadTop_2leps_delr->GetYaxis()->SetTitle("DelR(WrongLepton,HadronicTop");
   hst_HadTop_2leps_delr->SetTitle("DelR Hadronic Tops & Lepton");
   hst_HadTop_2leps_delr->Draw("colz");
-  can53->SaveAs("1DDistPlots/plot_HadTop_2leps_delr.png");
+  can30->SaveAs("1DDistPlots/plot_HadTop_2leps_delr.png");
 
 }
