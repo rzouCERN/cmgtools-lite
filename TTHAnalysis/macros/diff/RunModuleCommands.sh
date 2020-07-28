@@ -1,11 +1,11 @@
-#Gen
+# Calculates Gen-level quantities
 python ../prepareEventVariablesFriendTree.py -t NanoAOD -d TTHnobb_fxfx ../../macros/diff/skimmedTrees_16/ 2lss_diff/Gen -I CMGTools.TTHAnalysis.tools.nanoAOD.ttH_modules higgsDiffGenTTH -F Friends ../../macros/diff/skimmedTrees_16/0_jmeUnc_v1/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/2_scalefactors/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/3_tauCount/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/1_recl/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/5_BDThtt_reco/{cname}_Friend.root --env uclouvain
 
-#Reco
+# Runs reconstruction algorithm with mass constraint, and computes reco quantities
 python ../prepareEventVariablesFriendTree.py -t NanoAOD -d TTHnobb_fxfx ../../macros/diff/skimmedTrees_16/ 2lss_diff/Reco -I CMGTools.TTHAnalysis.tools.nanoAOD.ttH_modules higgsDiffRecoTTH -F Friends ../../macros/diff/skimmedTrees_16/0_jmeUnc_v1/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/2_scalefactors/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/3_tauCount/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/1_recl/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/5_BDThtt_reco/{cname}_Friend.root --env uclouvain
 
-#Reco_NoMassConstraint
+# Runs reconstruction algorithm without mass constraint, and computes reco quantities
 python ../prepareEventVariablesFriendTree.py -t NanoAOD -d TTHnobb_fxfx ../../macros/diff/skimmedTrees_16/ 2lss_diff/Reco_NoMassConstraint -I CMGTools.TTHAnalysis.tools.nanoAOD.ttH_modules higgsDiffRecoTTH_noWmassConstraint -F Friends ../../macros/diff/skimmedTrees_16/0_jmeUnc_v1/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/2_scalefactors/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/3_tauCount/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/1_recl/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/5_BDThtt_reco/{cname}_Friend.root --env uclouvain
 
-#Comp
+# Reads Gen-level and reco quantites (& post-processed ntuples), and computes quantites that require both
 python ../prepareEventVariablesFriendTree.py -t NanoAOD -d TTHnobb_fxfx ../../macros/diff/skimmedTrees_16/ 2lss_diff/Comp -I CMGTools.TTHAnalysis.tools.nanoAOD.ttH_modules higgsDiffCompTTH -F Friends ../../macros/diff/2lss_diff/Gen/{cname}_Friend.root -F Friends ../../macros/diff/2lss_diff/Reco_NoMassConstraint/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/0_jmeUnc_v1/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/2_scalefactors/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/3_tauCount/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/1_recl/{cname}_Friend.root -F Friends ../../macros/diff/skimmedTrees_16/5_BDThtt_reco/{cname}_Friend.root --env uclouvain

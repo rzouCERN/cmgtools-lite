@@ -10,6 +10,7 @@
   //  TFile f(fileName);
   TFile fgen ("2lss_diff/Gen/TTHnobb_fxfx_Friend.root");
   TFile freco("2lss_diff/Reco_NoMassConstraint/TTHnobb_fxfx_Friend.root");
+//  TFile freco("2lss_diff/Reco/TTHnobb_fxfx_Friend.root");
   TFile fcomp("2lss_diff/Comp/TTHnobb_fxfx_Friend.root");
   TTree *ft     = (TTree*) fgen.Get("Friends");
   TTree *ftreco = (TTree*) freco.Get("Friends");

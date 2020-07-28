@@ -1,0 +1,42 @@
+*** Basic instructions for skimming the ntuples, running the modules, and producing plots ***
+
+
+** Setting up your working directory **
+Following the instructions at CMGTools/README.md
+
+
+
+** Skim postprocessed ntuples for TTHnobb_fxfx sample for 2lss_tight events (2016) **
+cd CMGTools/TTHAnalysis/python/plotter/
+. diff-2lss-studies/skim_command.sh 2016
+
+the skimmed sample and all needed skimmed FTs will appear here:
+TTHAnalysis/macros/diff/skimmedTrees_16/
+
+
+
+** Run the three modules over the skimmed sample at the command line **
+Example commands to run all three modules on skimmed TTHnobb_fxfx sample can be found here:
+TTHAnalysis/macros/diff/RunModuleCommands.sh
+
+Each command creates a root file at:
+TTHAnalysis/macros/diff/2lss_diff/<MODULE>/TTHnobb_fxfx_Friend.root
+For <MODULE>={Gen, Reco, Reco_NoMassConstraint} respectively
+
+On the command line, the speed of each module is roughly (on ingrid at UCLouvain)
+Gen:  196 Events/s
+Reco:  58 Events/s  (W/ & W/O Mass Constraint)
+Comp: 176 Events/s
+
+
+
+** Produce some plots **
+cd TTHAnalysis/macros/diff/
+root -l producePlots.cc
+
+The produced plots are stored at
+TTHAnalysis/macros/diff/1DDistPlots/
+
+The script needs the outputs of the Gen, Reco_NoMassConstraint, and Comp, to run.
+You can switch between Reco_NoMassConstraint and Reco by commenting out the appropriate input file at the top of the script
+The script also prints event counts passing various criteria, and computes a few linear correlation coefficients. The details can be found in the script itself.
