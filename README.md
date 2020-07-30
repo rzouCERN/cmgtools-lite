@@ -23,7 +23,7 @@ git remote add cmg-central https://github.com/CERN-PH-CMG/cmg-cmssw.git -f -t he
 
 ```
 cp /home/ucl/cp3/dcransha/ttHdiff/sparse-checkout_104X_heppy .git/info/sparse-checkout
-git checkout -b heppy_104X_dev cmg-central/heppy_104X_dev
+git checkout heppy_104X_dev
 ```
 N.B. If you don't have access to /home/ucl/cp3/dcransha/ttHdiff/sparse-checkout_104X_heppy, you can instead add the following to .git/info/sparse-checkout
 
@@ -56,8 +56,9 @@ cd CMGTools
 #### Add your fork, and push the latest branch to it
 
 ```
+git remote remove origin
 git remote add origin  https://github.com/YOUR_GITHUB_REPOSITORY/cmgtools-lite.git
-git push -u origin 104X_dev_nano_dev
+git push -u origin 104X_dev_nano_tools
 ```
 
 #### Compile
